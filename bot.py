@@ -81,6 +81,10 @@ def manda_messaggio(testo):
     TELEGRAM_CHAT_ID può contenere più numeri separati da virgola,
     es. "111111111,222222222" (tu e un amico). Ognuno deve prima
     aver premuto "Avvia" sul bot, altrimenti Telegram non lo fa scrivere.
+
+    Può contenere anche un canale Telegram: "@nomecanale" se è pubblico,
+    oppure il suo numero (inizia con -100) se è privato. Il bot deve essere
+    amministratore del canale. Vedi OBIETTIVI.md, "Passare a un canale".
     """
     segreti = leggi_segreti()
     indirizzo = f"https://api.telegram.org/bot{segreti['TELEGRAM_TOKEN']}/sendMessage"

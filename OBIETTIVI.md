@@ -3,9 +3,9 @@
 ## Come funziona
 Le prenotazioni non si fanno sul sito della mensa: si fanno con un messaggio WhatsApp al numero della mensa.
 
-1. Ogni mattina alle 7:15 il bot (su GitHub Actions) legge il menu del giorno dal sito e lo salva in `docs/menu.json`.
+1. Ogni mattina verso le 7:15 il bot (su GitHub Actions) legge il menu del giorno dal sito e lo salva in `docs/menu.json`. Se GitHub parte in ritardo, il bot parte lo stesso fino alle 11, una volta sola al giorno.
 2. Subito dopo GitHub pubblica la pagina web (cartella `docs/`) su GitHub Pages.
-3. Il bot ti manda su Telegram il link alla pagina.
+3. Il bot manda su Telegram il menu e il link alla pagina a tutte le chat del segreto `TELEGRAM_CHAT_ID` (numeri separati da virgola).
 4. Nella pagina spunti i piatti di pranzo e/o cena. La pagina scrive il messaggio di prenotazione.
 5. Pranzo e cena hanno ciascuno il suo messaggio, con l'orario limite (pranzo entro le 10:00, cena entro le 17:00, da confermare).
 6. Premi **Invia su WhatsApp**: si apre direttamente la chat della mensa e invii tu. In alternativa premi **Copia**.
@@ -27,3 +27,26 @@ Secondo: pollo arrosto
 Contorno: insalata
 Intolleranze/allergie: nessuna
 ```
+
+## Passare a un canale Telegram (se un giorno serve)
+Oggi il bot scrive alle persone una per una: ognuno deve premere «Avvia» sul bot
+e poi il suo numero di chat va aggiunto a mano nel segreto `TELEGRAM_CHAT_ID`.
+Con un canale invece chi vuole il menu entra con un link, e chi non lo vuole più esce:
+non si tocca più GitHub. **Il codice è già pronto**, va cambiato solo il segreto.
+
+1. Su Telegram: matita ✏️ (nuovo messaggio) → **Nuovo canale**. Dagli un nome, es. «Menu Mensa Chieti».
+2. Scegli **Pubblico** (con un nome tipo `menumensachieti`) oppure **Privato** (si entra solo col link d'invito).
+3. Nel canale: impostazioni → **Amministratori** → **Aggiungi amministratore** → cerca `@menu_mensa_chieti_francy_bot`.
+   Basta il permesso **Pubblica messaggi**.
+4. Il valore da mettere nel segreto:
+   - canale **pubblico**: `@menumensachieti` (con la @ davanti)
+   - canale **privato**: scrivi un messaggio qualsiasi nel canale e chiedi a Claude di trovare
+     il numero del canale (inizia con `-100…`).
+5. Su GitHub: Settings → Secrets and variables → Actions → matita ✏️ su **TELEGRAM_CHAT_ID**
+   e scrivi il valore del punto 4. (GitHub non ti mostra il valore vecchio: è normale.)
+6. Se vuoi lo stesso valore anche sul PC, cambialo in `segreti.env`.
+7. Prova: GitHub → **Actions** → **Menu mensa** → **Run workflow**. Il messaggio deve comparire nel canale.
+8. Condividi il link del canale. Anche tu entri nel canale come tutti gli altri.
+
+Si possono anche tenere insieme canale e persone, separati da virgola: `@menumensachieti,111111111`.
+Ma se sei anche nel canale ti arriva due volte.
