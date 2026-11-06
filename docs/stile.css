@@ -98,10 +98,17 @@ legend { font-weight: 600; color: var(--verde); padding: 0; margin-bottom: 2px; 
   color: var(--testo);
 }
 /* orario di ritiro dell'asporto */
-.ritiro { display: block; font-weight: 600; margin-top: 4px; }
-.ritiro input {
-  display: block;
-  margin-top: 4px;
+.ritiro { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 4px; }
+.spunta-ritiro {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  font-weight: 600;
+}
+.spunta-ritiro input { width: 24px; height: 24px; accent-color: var(--verde); }
+.ora-ritiro[hidden] { display: none; }
+.ora-ritiro {
   padding: 10px 12px;
   font-size: 1rem;
   border: 1px solid var(--bordo);

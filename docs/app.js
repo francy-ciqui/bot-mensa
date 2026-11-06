@@ -202,7 +202,7 @@ function componi(pasto) {
     for (const p of piatti) righe.push(RIENTRO + p);
   }
   const ritiro = sezione.querySelector(".ora-ritiro").value;
-  if (ritiro) righe.push(`Ritiro asporto: ore ${ritiro}`);
+  if (sezione.querySelector(".con-ritiro").checked && ritiro) righe.push(`Ritiro asporto: ore ${ritiro}`);
   righe.push(`Intolleranze/allergie: ${testoAllergie()}`);
   return righe.join("\n");
 }
@@ -231,7 +231,7 @@ function aggiornaScadenza(pasto) {
 
 // La casella "x2" compare solo se hai spuntato UN solo contorno e NON hai preso un primo
 function aggiornaDoppie(sezione) {
-  const spuntati = [...sezione.querySelectorAll("label:first-child input:checked")];
+  const spuntati = [...sezione.querySelectorAll(".piatto > label:first-child input:checked")];
   const primoPreso = spuntati.some((c) => etichetta(c.dataset.portata) === "Primo");
   const quantiContorni = spuntati.filter((c) => etichetta(c.dataset.portata) === "Contorno").length;
   sezione.querySelectorAll(".doppia").forEach((doppia) => {
@@ -264,9 +264,18 @@ function aggiornaTutto() {
 for (const pasto of ["pranzo", "cena"]) {
   const sezione = $(pasto);
 
-  // Orario di ritiro dell'asporto: si ricorda l'ultimo scelto per quel pasto
+  // Asporto: con la spunta accesa compare l'orario e va nel messaggio, spenta sparisce.
+  // Il telefono si ricorda sia la spunta sia l'ultimo orario scelto per quel pasto.
+  const spunta = sezione.querySelector(".con-ritiro");
   const ora = sezione.querySelector(".ora-ritiro");
+  spunta.checked = localStorage.getItem("mensa-asporto-" + pasto) === "si";
   ora.value = localStorage.getItem("mensa-ritiro-" + pasto) || "";
+  ora.hidden = !spunta.checked;
+  spunta.addEventListener("change", () => {
+    localStorage.setItem("mensa-asporto-" + pasto, spunta.checked ? "si" : "no");
+    ora.hidden = !spunta.checked;
+    if (menu) aggiornaPasto(pasto);
+  });
   ora.addEventListener("input", () => {
     localStorage.setItem("mensa-ritiro-" + pasto, ora.value);
     if (menu) aggiornaPasto(pasto);
