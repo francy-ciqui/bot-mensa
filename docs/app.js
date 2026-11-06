@@ -179,21 +179,20 @@ function componi(pasto) {
   const righe = [
     `Prenotazione mensa – ${menu.giorno}`,
     `Nome: ${$("nome").value.trim()}`,
-    `Pasto: ${pasto}`,
+    pasto.toUpperCase(), // "PRANZO" o "CENA"
   ];
-  // Solo le portate che hai scelto, nell'ordine primo, secondo, contorni, poi le altre
-  const contorni = scelti["Contorno"] || [];
-  delete scelti["Contorno"];
-  for (const tipo of ["Primo", "Secondo"]) {
-    if (scelti[tipo]) righe.push(`${tipo}: ${scelti[tipo].join(", ")}`);
-    delete scelti[tipo];
+  // Solo le portate che hai scelto, nell'ordine primo, secondo, contorno, poi le altre.
+  // Ogni piatto va sotto la sua portata, spostato a destra e con il pallino.
+  // (Spazi "speciali"  : WhatsApp non li cancella, quelli normali sì.)
+  const RIENTRO = " ".repeat(4) + "• ";
+  const PLURALI = { Primo: "Primi", Secondo: "Secondi", Contorno: "Contorni" };
+  const ordine = ["Primo", "Secondo", "Contorno", ...Object.keys(scelti)];
+  for (const tipo of new Set(ordine)) {
+    const piatti = scelti[tipo];
+    if (!piatti) continue;
+    righe.push(`${piatti.length > 1 && PLURALI[tipo] ? PLURALI[tipo] : tipo}:`);
+    for (const p of piatti) righe.push(RIENTRO + p);
   }
-  // I contorni uno sotto l'altro, con il pallino
-  if (contorni.length) {
-    righe.push(contorni.length === 1 ? "Contorno:" : "Contorni:");
-    for (const c of contorni) righe.push(`• ${c}`);
-  }
-  for (const [tipo, piatti] of Object.entries(scelti)) righe.push(`${tipo}: ${piatti.join(", ")}`);
   righe.push(`Intolleranze/allergie: ${testoAllergie()}`);
   return righe.join("\n");
 }
