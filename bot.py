@@ -1,11 +1,16 @@
-# bot.py - prende il menu di oggi e te lo manda su Telegram
+# bot.py - il bot della mensa fa due lavori, in due momenti:
+#
+#   python bot.py menu     -> legge il menu di oggi dal sito e lo salva in docs/menu.json
+#   python bot.py avvisa   -> ti manda su Telegram il link alla pagina per prenotare
 #
 # Usa:
 #   - menu.py       -> per leggere il menu dal sito
-#   - segreti.env   -> per il token del bot e il numero della tua chat
+#   - segreti.env   -> per il token del bot e il numero della tua chat (solo sul tuo PC)
 
+import json
 import os
-from datetime import date
+import sys
+from datetime import date, datetime
 from pathlib import Path
 
 import requests
@@ -13,6 +18,41 @@ import requests
 import menu
 
 CARTELLA = Path(__file__).parent
+FILE_MENU = CARTELLA / "docs" / "menu.json"
+
+# L'indirizzo della pagina su GitHub Pages
+PAGINA = os.environ.get("PAGINA_URL", "https://francy-ciqui.github.io/bot-mensa/")
+
+GIORNI = ["lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato", "domenica"]
+
+
+def giorno_in_parole(giorno):
+    """Es. date(2026, 11, 5) -> 'giovedì 5 novembre'."""
+    return f"{GIORNI[giorno.weekday()]} {giorno.day} {menu.MESI[giorno.month - 1]}"
+
+
+def salva_menu():
+    """Scarica il menu di oggi e lo scrive in docs/menu.json per la pagina web."""
+    oggi = date.today()
+    dati = {
+        "data": oggi.isoformat(),                 # es. "2026-11-05"
+        "giorno": giorno_in_parole(oggi),         # es. "giovedì 5 novembre"
+        "aggiornato": datetime.now().strftime("%H:%M"),
+        "errore": None,
+        "pranzo": {},
+        "cena": {},
+    }
+    try:
+        trovato = menu.estrai_menu(menu.scarica_pagina(), oggi)
+        dati["pranzo"] = trovato.get("pranzo", {})
+        dati["cena"] = trovato.get("cena", {})
+    except Exception as errore:
+        # Se il sito non risponde, la pagina lo dirà invece di restare vuota
+        dati["errore"] = str(errore)
+
+    FILE_MENU.parent.mkdir(exist_ok=True)
+    FILE_MENU.write_text(json.dumps(dati, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"Menu salvato in {FILE_MENU} ✅")
 
 
 def leggi_segreti():
@@ -47,13 +87,30 @@ def manda_messaggio(testo):
     risposta.raise_for_status()
 
 
-if __name__ == "__main__":
-    oggi = date.today()
+def avvisa():
+    """Manda su Telegram il promemoria con il link alla pagina."""
     try:
-        html = menu.scarica_pagina()
-        testo = menu.scrivi_menu(menu.estrai_menu(html, oggi), oggi)
-    except Exception as errore:
-        # Se il sito non risponde, te lo diciamo invece di restare in silenzio
-        testo = f"⚠️ Non sono riuscito a leggere il menu di oggi.\nErrore: {errore}"
+        dati = json.loads(FILE_MENU.read_text(encoding="utf-8"))
+    except Exception:
+        dati = {"errore": "file del menu mancante"}
+
+    if dati.get("errore"):
+        testo = (f"⚠️ Oggi non sono riuscito a leggere il menu.\n"
+                 f"Errore: {dati['errore']}\n\nLa pagina: {PAGINA}")
+    elif not dati.get("pranzo") and not dati.get("cena"):
+        testo = f"🤷 Oggi ({dati['giorno']}) sul sito non c'è nessun menu.\n\nLa pagina: {PAGINA}"
+    else:
+        testo = (f"🍽️ Menu mensa – {dati['giorno']}\n"
+                 f"Scegli i piatti e prepara il messaggio per il gruppo:\n{PAGINA}")
     manda_messaggio(testo)
-    print("Messaggio inviato su Telegram ✅")
+    print("Promemoria inviato su Telegram ✅")
+
+
+if __name__ == "__main__":
+    comando = sys.argv[1] if len(sys.argv) > 1 else ""
+    if comando == "menu":
+        salva_menu()
+    elif comando == "avvisa":
+        avvisa()
+    else:
+        print("Uso: python bot.py menu   oppure   python bot.py avvisa")

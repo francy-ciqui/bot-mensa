@@ -1,0 +1,132 @@
+/* stile.css - l'aspetto della pagina, pensato per il telefono */
+:root {
+  --verde: #1f6f5c;
+  --sfondo: #f4f6f5;
+  --carta: #ffffff;
+  --testo: #1c2422;
+  --tenue: #5d6b67;
+  --bordo: #d9e0dd;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --verde: #3fae90;
+    --sfondo: #121816;
+    --carta: #1c2422;
+    --testo: #e8eeec;
+    --tenue: #9aa8a4;
+    --bordo: #2e3a37;
+  }
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 17px;
+  background: var(--sfondo);
+  color: var(--testo);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+header {
+  background: var(--verde);
+  color: #fff;
+  padding: calc(16px + env(safe-area-inset-top)) 16px 14px;
+}
+header h1 { margin: 0; font-size: 1.4rem; }
+header p { margin: 4px 0 0; opacity: .9; }
+main { max-width: 560px; margin: 0 auto; padding: 12px; }
+
+.pasto, .dati {
+  background: var(--carta);
+  border: 1px solid var(--bordo);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+h2 { font-size: 1.15rem; margin: 2px 0 4px; }
+h3 { font-size: 1rem; margin: 14px 0 6px; }
+fieldset { border: 0; padding: 0; margin: 0 0 10px; }
+legend { font-weight: 600; color: var(--verde); padding: 0; margin-bottom: 2px; }
+
+/* ogni piatto è una riga grande, facile da toccare col dito */
+.piatto {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  border-top: 1px solid var(--bordo);
+}
+.piatto > label:first-child {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 4px;
+  min-height: 48px;
+}
+.piatto input { width: 24px; height: 24px; flex: none; accent-color: var(--verde); }
+.piatto:has(label:first-child input:checked) span { font-weight: 600; }
+
+/* casella "x2" per la doppia porzione dei contorni */
+.doppia {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border: 1px solid var(--bordo);
+  border-radius: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.doppia[hidden] { display: none; }
+
+/* orario limite di prenotazione */
+.scadenza { margin: 0 0 10px; color: var(--tenue); font-size: .95rem; }
+.scadenza.vicina { color: #b26a00; font-weight: 600; }
+.scadenza.scaduta { color: #c62828; font-weight: 600; }
+
+.dati label { display: block; font-weight: 600; margin-bottom: 10px; }
+.dati input {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid var(--bordo);
+  border-radius: 10px;
+  background: var(--sfondo);
+  color: var(--testo);
+}
+.nota { font-size: .85rem; color: var(--tenue); margin: 0; }
+
+pre {
+  white-space: pre-wrap;
+  font-family: inherit;
+  font-size: .95rem;
+  margin: 0;
+  color: var(--tenue);
+}
+.avviso {
+  background: #fff3cd;
+  color: #664d03;
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.pulsanti { display: flex; gap: 10px; margin-top: 12px; }
+.pulsanti button, .pulsanti a {
+  flex: 1;
+  min-height: 52px;
+  border: 0;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+.copia { background: var(--bordo); color: var(--testo); }
+.whatsapp { background: #25d366; color: #073b1c; }
+.pulsanti button:disabled, .pulsanti a.disattivo { opacity: .4; cursor: default; }

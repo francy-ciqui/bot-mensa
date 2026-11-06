@@ -1,3 +1,10 @@
 # Questo file dice a GitHub cosa NON caricare mai online
 segreti.env
 __pycache__/
+
+# Pagine del sito salvate per studiarle (possono contenere dati personali)
+*.htm
+*_files/
+
+# Impostazioni locali di Claude Code
+.claude/

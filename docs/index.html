@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mensa Chieti</title>
+  <meta name="theme-color" content="#1f6f5c">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icona-192.png">
+  <link rel="apple-touch-icon" href="icona-192.png">
+  <link rel="stylesheet" href="stile.css">
+</head>
+<body>
+  <header>
+    <h1>🍽️ Mensa Chieti</h1>
+    <p id="giorno">Carico il menu…</p>
+  </header>
+
+  <main>
+    <p id="avviso" class="avviso" hidden></p>
+
+    <section class="dati">
+      <label>Nome
+        <input id="nome" type="text" autocomplete="name" placeholder="Nome e cognome">
+      </label>
+      <label>Intolleranze/allergie
+        <input id="allergie" type="text" placeholder="nessuna">
+      </label>
+      <p class="nota">Nome e intolleranze restano salvati su questo telefono.</p>
+    </section>
+
+    <!-- Pranzo e cena sono due prenotazioni separate, ognuna col suo messaggio -->
+    <section id="pranzo" class="pasto" hidden>
+      <h2>☀️ Pranzo</h2>
+      <p class="scadenza"></p>
+      <div class="portate"></div>
+      <h3>Messaggio</h3>
+      <pre class="anteprima"></pre>
+      <div class="pulsanti">
+        <button class="copia" type="button">📋 Copia</button>
+        <a class="whatsapp" href="#" target="_blank" rel="noopener">💬 Invia su WhatsApp</a>
+      </div>
+    </section>
+
+    <section id="cena" class="pasto" hidden>
+      <h2>🌙 Cena</h2>
+      <p class="scadenza"></p>
+      <div class="portate"></div>
+      <h3>Messaggio</h3>
+      <pre class="anteprima"></pre>
+      <div class="pulsanti">
+        <button class="copia" type="button">📋 Copia</button>
+        <a class="whatsapp" href="#" target="_blank" rel="noopener">💬 Invia su WhatsApp</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

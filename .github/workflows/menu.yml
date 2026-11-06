@@ -5,46 +5,105 @@ on:
   # GitHub ragiona in ora inglese (UTC), che cambia rispetto all'Italia con l'ora legale.
   # Quindi lo facciamo partire due volte e, sotto, teniamo solo quella delle 7 italiane.
   schedule:
-    # (minuto 17 e non 00: allo scoccare dell'ora GitHub è affollato e ritarda di più)
-    - cron: "17 5 * * *"   # 7:17 in Italia d'estate
-    - cron: "17 6 * * *"   # 7:17 in Italia d'inverno
+    - cron: "15 5 * * *"   # 7:15 in Italia d'estate
+    - cron: "15 6 * * *"   # 7:15 in Italia d'inverno
   # Permette di lanciarlo a mano dal sito di GitHub (pulsante "Run workflow")
   workflow_dispatch:
+  # Quando cambi la pagina (cartella docs/), la ripubblica subito, senza leggere il menu
+  push:
+    branches: [main]
+    paths: ["docs/**"]
+
+# Il bot può salvare menu.json nel repository e pubblicare la pagina
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# Mai due pubblicazioni contemporanee
+concurrency:
+  group: pagina
+  cancel-in-progress: false
 
 jobs:
-  invia-menu:
+  # 1) Decide cosa fare
+  orario:
     runs-on: ubuntu-latest
     env:
       TZ: Europe/Rome
+    outputs:
+      vai: ${{ steps.controllo.outputs.vai }}
+      leggi: ${{ steps.controllo.outputs.leggi }}
     steps:
       - name: È l'ora giusta in Italia?
-        id: orario
+        id: controllo
         run: |
           ORA=$(date +%H)
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "$ORA" = "07" ]; then
-            echo "vai=si" >> "$GITHUB_OUTPUT"
-          else
+          EVENTO="${{ github.event_name }}"
+          if [ "$EVENTO" = "schedule" ] && [ "$ORA" != "07" ]; then
             echo "Sono le $ORA in Italia: questa partenza la salto."
             echo "vai=no" >> "$GITHUB_OUTPUT"
+          else
+            echo "vai=si" >> "$GITHUB_OUTPUT"
+          fi
+          # Il menu si legge al mattino o quando lo lanci a mano, non quando modifichi la pagina
+          if [ "$EVENTO" = "push" ]; then
+            echo "leggi=no" >> "$GITHUB_OUTPUT"
+          else
+            echo "leggi=si" >> "$GITHUB_OUTPUT"
           fi
 
+  # 2) Legge il menu, pubblica la pagina, manda il link
+  menu-e-pagina:
+    needs: orario
+    if: needs.orario.outputs.vai == 'si'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.pubblica.outputs.page_url }}
+    env:
+      TZ: Europe/Rome
+      LEGGI: ${{ needs.orario.outputs.leggi }}
+    steps:
       - name: Scarica il codice del bot
-        if: steps.orario.outputs.vai == 'si'
         uses: actions/checkout@v4
 
       - name: Prepara Python
-        if: steps.orario.outputs.vai == 'si'
+        if: env.LEGGI == 'si'
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
       - name: Installa le librerie
-        if: steps.orario.outputs.vai == 'si'
+        if: env.LEGGI == 'si'
         run: pip install -r requirements.txt
 
-      - name: Manda il menu su Telegram
-        if: steps.orario.outputs.vai == 'si'
+      - name: Legge il menu dal sito e lo salva in docs/menu.json
+        if: env.LEGGI == 'si'
+        run: python bot.py menu
+
+      - name: Salva menu.json nel repository
+        if: env.LEGGI == 'si'
+        run: |
+          git config user.name "bot-mensa"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/menu.json
+          git diff --cached --quiet || git commit -m "Menu del $(date +%d/%m/%Y)"
+          git push
+
+      - name: Prepara la pagina
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+      - name: Pubblica la pagina su GitHub Pages
+        id: pubblica
+        uses: actions/deploy-pages@v4
+
+      # Il promemoria parte anche se qualcosa sopra è andato storto
+      - name: Manda il link su Telegram
+        if: always() && env.LEGGI == 'si'
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python bot.py
+        run: python bot.py avvisa
