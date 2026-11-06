@@ -41,9 +41,16 @@ def pulisci_piatto(testo):
         allergeni += [int(n) for n in codici.split("-")]
     testo = re.sub(r"\s\d+(-\d+)*\b", "", testo)         # via i numeri dal nome
     testo = " ".join(testo.split())
+    # Legenda della mensa: "V" = piatto vegano, "*" = può contenere prodotti surgelati
+    if re.search(r"\sV$", testo):
+        vegetariano = True
+        testo = re.sub(r"\sV$", "", testo)
+    surgelato = "*" in testo
+    testo = testo.replace("*", "").strip()
     if vegetariano:
-        testo = re.sub(r"\sV$", "", testo)               # a volte c'è una "V" in più
         testo += " 🌱"
+    if surgelato:
+        testo += " ❄️"
     return {"nome": testo, "allergeni": sorted(set(allergeni))}
 
 

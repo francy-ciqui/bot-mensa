@@ -75,9 +75,9 @@ function etichetta(portata) {
   return portata;
 }
 
-// Nel messaggio niente 🌱 e niente MAIUSCOLO
+// Nel messaggio niente 🌱 ❄️ e niente MAIUSCOLO
 function pulisci(piatto) {
-  let t = piatto.replace("🌱", "").trim();
+  let t = piatto.replace("🌱", "").replace("❄️", "").trim();
   if (t === t.toUpperCase()) t = t.toLowerCase();
   return t;
 }
