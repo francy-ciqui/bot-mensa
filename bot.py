@@ -100,8 +100,11 @@ def avvisa():
     elif not dati.get("pranzo") and not dati.get("cena"):
         testo = f"🤷 Oggi ({dati['giorno']}) sul sito non c'è nessun menu.\n\nLa pagina: {PAGINA}"
     else:
-        testo = (f"🍽️ Menu mensa – {dati['giorno']}\n"
-                 f"Scegli i piatti e prepara il messaggio per il gruppo:\n{PAGINA}")
+        # Prima il menu completo, poi il link alla pagina per prenotare
+        giorno = date.fromisoformat(dati["data"])
+        pasti = {p: dati[p] for p in ("pranzo", "cena") if dati.get(p)}
+        testo = (menu.scrivi_menu(pasti, giorno)
+                 + f"\n\n👉 Prenota qui:\n{PAGINA}")
     manda_messaggio(testo)
     print("Promemoria inviato su Telegram ✅")
 
