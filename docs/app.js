@@ -143,10 +143,6 @@ function mostraPasto(pasto) {
         x2.className = "x2";
         doppia.append(x2, " x2");
         riga.appendChild(doppia);
-        casella.addEventListener("change", () => {
-          doppia.hidden = !casella.checked;
-          if (!casella.checked) x2.checked = false;
-        });
         x2.addEventListener("change", () => aggiornaPasto(pasto));
       }
       casella.addEventListener("change", () => aggiornaPasto(pasto));
@@ -208,8 +204,21 @@ function aggiornaScadenza(pasto) {
   }
 }
 
+// La casella "x2" compare solo se il contorno è spuntato e NON hai preso un primo
+function aggiornaDoppie(sezione) {
+  const primoPreso = [...sezione.querySelectorAll("label:first-child input:checked")]
+    .some((c) => etichetta(c.dataset.portata) === "Primo");
+  sezione.querySelectorAll(".doppia").forEach((doppia) => {
+    const contorno = doppia.parentElement.querySelector("label:first-child input");
+    const permessa = contorno.checked && !primoPreso;
+    doppia.hidden = !permessa;
+    if (!permessa) doppia.querySelector(".x2").checked = false;
+  });
+}
+
 function aggiornaPasto(pasto) {
   const sezione = $(pasto);
+  aggiornaDoppie(sezione);
   const testo = componi(pasto);
   const wa = sezione.querySelector(".whatsapp");
   sezione.querySelector(".anteprima").textContent = testo || "Spunta almeno un piatto.";
