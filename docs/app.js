@@ -181,9 +181,17 @@ function componi(pasto) {
     `Nome: ${$("nome").value.trim()}`,
     `Pasto: ${pasto}`,
   ];
-  for (const tipo of ["Primo", "Secondo", "Contorno"]) {
-    righe.push(`${tipo}: ${scelti[tipo] ? scelti[tipo].join(", ") : "nessuno"}`);
+  // Solo le portate che hai scelto, nell'ordine primo, secondo, contorni, poi le altre
+  const contorni = scelti["Contorno"] || [];
+  delete scelti["Contorno"];
+  for (const tipo of ["Primo", "Secondo"]) {
+    if (scelti[tipo]) righe.push(`${tipo}: ${scelti[tipo].join(", ")}`);
     delete scelti[tipo];
+  }
+  // I contorni uno sotto l'altro, con il pallino
+  if (contorni.length) {
+    righe.push(contorni.length === 1 ? "Contorno:" : "Contorni:");
+    for (const c of contorni) righe.push(`• ${c}`);
   }
   for (const [tipo, piatti] of Object.entries(scelti)) righe.push(`${tipo}: ${piatti.join(", ")}`);
   righe.push(`Intolleranze/allergie: ${testoAllergie()}`);
