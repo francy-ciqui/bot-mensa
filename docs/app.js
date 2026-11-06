@@ -186,8 +186,8 @@ function componi(pasto) {
 
   const righe = [
     `Prenotazione mensa – ${menu.giorno}`,
-    `Nome: ${$("nome").value.trim()}`,
     pasto.toUpperCase(), // "PRANZO" o "CENA"
+    `Nome: ${$("nome").value.trim()}`,
   ];
   // Solo le portate che hai scelto, nell'ordine primo, secondo, contorno, poi le altre.
   // Ogni piatto va sotto la sua portata, spostato a destra e con il pallino.
