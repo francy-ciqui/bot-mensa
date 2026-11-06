@@ -201,6 +201,8 @@ function componi(pasto) {
     righe.push(`${piatti.length > 1 && PLURALI[tipo] ? PLURALI[tipo] : tipo}:`);
     for (const p of piatti) righe.push(RIENTRO + p);
   }
+  const ritiro = sezione.querySelector(".ora-ritiro").value;
+  if (ritiro) righe.push(`Ritiro asporto: ore ${ritiro}`);
   righe.push(`Intolleranze/allergie: ${testoAllergie()}`);
   return righe.join("\n");
 }
@@ -261,6 +263,15 @@ function aggiornaTutto() {
 // --- Pulsanti Copia e WhatsApp di ogni pasto ---
 for (const pasto of ["pranzo", "cena"]) {
   const sezione = $(pasto);
+
+  // Orario di ritiro dell'asporto: si ricorda l'ultimo scelto per quel pasto
+  const ora = sezione.querySelector(".ora-ritiro");
+  ora.value = localStorage.getItem("mensa-ritiro-" + pasto) || "";
+  ora.addEventListener("input", () => {
+    localStorage.setItem("mensa-ritiro-" + pasto, ora.value);
+    if (menu) aggiornaPasto(pasto);
+  });
+
   const bottone = sezione.querySelector(".copia");
   bottone.addEventListener("click", async () => {
     const testo = componi(pasto);

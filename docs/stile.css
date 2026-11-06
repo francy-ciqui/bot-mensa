@@ -97,6 +97,19 @@ legend { font-weight: 600; color: var(--verde); padding: 0; margin-bottom: 2px; 
   background: var(--sfondo);
   color: var(--testo);
 }
+/* orario di ritiro dell'asporto */
+.ritiro { display: block; font-weight: 600; margin-top: 4px; }
+.ritiro input {
+  display: block;
+  margin-top: 4px;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid var(--bordo);
+  border-radius: 10px;
+  background: var(--sfondo);
+  color: var(--testo);
+}
+
 .nota { font-size: .85rem; color: var(--tenue); margin: 0; }
 
 pre {
