@@ -143,7 +143,15 @@ function mostraPasto(pasto) {
         x2.className = "x2";
         doppia.append(x2, " x2");
         riga.appendChild(doppia);
-        x2.addEventListener("change", () => aggiornaPasto(pasto));
+        x2.addEventListener("change", () => {
+          // Doppia porzione per un solo contorno: spuntandone una, si tolgono le altre
+          if (x2.checked) {
+            sezione.querySelectorAll(".x2").forEach((altra) => {
+              if (altra !== x2) altra.checked = false;
+            });
+          }
+          aggiornaPasto(pasto);
+        });
       }
       casella.addEventListener("change", () => aggiornaPasto(pasto));
       gruppo.appendChild(riga);
