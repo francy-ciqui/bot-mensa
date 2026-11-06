@@ -227,13 +227,14 @@ function aggiornaScadenza(pasto) {
   }
 }
 
-// La casella "x2" compare solo se il contorno è spuntato e NON hai preso un primo
+// La casella "x2" compare solo se hai spuntato UN solo contorno e NON hai preso un primo
 function aggiornaDoppie(sezione) {
-  const primoPreso = [...sezione.querySelectorAll("label:first-child input:checked")]
-    .some((c) => etichetta(c.dataset.portata) === "Primo");
+  const spuntati = [...sezione.querySelectorAll("label:first-child input:checked")];
+  const primoPreso = spuntati.some((c) => etichetta(c.dataset.portata) === "Primo");
+  const quantiContorni = spuntati.filter((c) => etichetta(c.dataset.portata) === "Contorno").length;
   sezione.querySelectorAll(".doppia").forEach((doppia) => {
     const contorno = doppia.parentElement.querySelector("label:first-child input");
-    const permessa = contorno.checked && !primoPreso;
+    const permessa = contorno.checked && !primoPreso && quantiContorni === 1;
     doppia.hidden = !permessa;
     if (!permessa) doppia.querySelector(".x2").checked = false;
   });
