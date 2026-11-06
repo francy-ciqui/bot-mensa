@@ -2,10 +2,17 @@
 // Prova sempre prima la rete (così il menu è quello nuovo);
 // se manca la connessione, mostra l'ultima versione salvata.
 
-const CASSETTO = "mensa-v1";
+const CASSETTO = "mensa-v2";
 
 self.addEventListener("install", () => self.skipWaiting());
-self.addEventListener("activate", (e) => e.waitUntil(self.clients.claim()));
+// All'avvio butta le copie delle versioni precedenti
+self.addEventListener("activate", (e) =>
+  e.waitUntil(
+    caches.keys()
+      .then((nomi) => Promise.all(nomi.filter((n) => n !== CASSETTO).map((n) => caches.delete(n))))
+      .then(() => self.clients.claim())
+  )
+);
 
 self.addEventListener("fetch", (evento) => {
   const richiesta = evento.request;
@@ -16,7 +23,9 @@ self.addEventListener("fetch", (evento) => {
   chiave.search = "";
 
   evento.respondWith(
-    fetch(richiesta)
+    // "no-cache": chiede sempre a GitHub se c'è una versione nuova
+    // (senza, il telefono può tenere la copia vecchia fino a 10 minuti)
+    fetch(richiesta, { cache: "no-cache" })
       .then((risposta) => {
         if (risposta.ok) {
           const copia = risposta.clone();
