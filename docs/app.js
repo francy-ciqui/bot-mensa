@@ -153,7 +153,15 @@ function mostraPasto(pasto) {
           aggiornaPasto(pasto);
         });
       }
-      casella.addEventListener("change", () => aggiornaPasto(pasto));
+      casella.addEventListener("change", () => {
+        // Un solo primo e un solo secondo: spuntandone uno, si tolgono gli altri
+        if (casella.checked && ["Primo", "Secondo"].includes(etichetta(portata))) {
+          gruppo.querySelectorAll(".piatto > label:first-child input").forEach((altra) => {
+            if (altra !== casella) altra.checked = false;
+          });
+        }
+        aggiornaPasto(pasto);
+      });
       gruppo.appendChild(riga);
     }
     contenitore.appendChild(gruppo);
