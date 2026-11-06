@@ -9,8 +9,8 @@ const SCADENZE = { pranzo: "10:00", cena: "17:00" };
 
 // --- Nome e intolleranze: si ricordano l'ultima cosa scritta (salvate nel telefono) ---
 // Se non hai mai scritto niente, le intolleranze partono da "nessuna"
-const PREDEFINITI = { nome: "", allergie: "nessuna" };
-for (const campo of ["nome", "allergie"]) {
+const PREDEFINITI = { nome: "", allergie: "nessuna", numero: "" };
+for (const campo of ["nome", "allergie", "numero"]) {
   $(campo).value = localStorage.getItem("mensa-" + campo) || PREDEFINITI[campo];
   $(campo).addEventListener("input", () => {
     localStorage.setItem("mensa-" + campo, $(campo).value.trim());
@@ -32,6 +32,15 @@ function pulisci(piatto) {
   let t = piatto.replace("🌱", "").trim();
   if (t === t.toUpperCase()) t = t.toLowerCase();
   return t;
+}
+
+// WhatsApp vuole il numero con il prefisso del paese e solo cifre: "333 1234567" -> "393331234567"
+// Se il campo è vuoto, WhatsApp ti fa scegliere tu a chi mandarlo.
+function numeroWhatsApp() {
+  let n = $("numero").value.replace(/\D/g, "");
+  if (n.startsWith("00")) n = n.slice(2);
+  if (n.length === 10 && n.startsWith("3")) n = "39" + n; // cellulare italiano senza +39
+  return n;
 }
 
 function oggiISO() {
@@ -151,7 +160,7 @@ function aggiornaPasto(pasto) {
   sezione.querySelector(".anteprima").textContent = testo || "Spunta almeno un piatto.";
   sezione.querySelector(".copia").disabled = !testo;
   wa.classList.toggle("disattivo", !testo);
-  wa.href = testo ? "https://wa.me/?text=" + encodeURIComponent(testo) : "#";
+  wa.href = testo ? `https://wa.me/${numeroWhatsApp()}?text=` + encodeURIComponent(testo) : "#";
   aggiornaScadenza(pasto);
 }
 

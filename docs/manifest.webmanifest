@@ -1,7 +1,7 @@
 {
   "name": "Mensa Chieti",
   "short_name": "Mensa",
-  "description": "Menu del giorno e messaggio di prenotazione per il gruppo WhatsApp",
+  "description": "Menu del giorno e messaggio di prenotazione da mandare su WhatsApp",
   "lang": "it",
   "start_url": "./",
   "scope": "./",
