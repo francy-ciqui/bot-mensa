@@ -3,10 +3,13 @@ name: Menu mensa
 
 on:
   # GitHub ragiona in ora inglese (UTC), che cambia rispetto all'Italia con l'ora legale.
-  # Quindi lo facciamo partire due volte e, sotto, teniamo solo quella delle 7 italiane.
+  # In più a volte parte in ritardo (anche di un'ora) o salta una partenza.
+  # Quindi lo facciamo partire tre volte: la prima che arriva tra le 7 e le 11 italiane
+  # manda il menu, le altre vedono che oggi è già fatto e si fermano.
   schedule:
-    - cron: "15 5 * * *"   # 7:15 in Italia d'estate
-    - cron: "15 6 * * *"   # 7:15 in Italia d'inverno
+    - cron: "15 5 * * *"   # 7:15 in Italia d'estate (6:15 d'inverno: troppo presto, salta)
+    - cron: "15 6 * * *"   # 7:15 in Italia d'inverno (8:15 d'estate: riserva)
+    - cron: "15 7 * * *"   # riserva: 8:15 d'inverno, 9:15 d'estate
   # Permette di lanciarlo a mano dal sito di GitHub (pulsante "Run workflow")
   workflow_dispatch:
   # Quando cambi la pagina (cartella docs/), la ripubblica subito, senza leggere il menu
@@ -35,15 +38,29 @@ jobs:
       vai: ${{ steps.controllo.outputs.vai }}
       leggi: ${{ steps.controllo.outputs.leggi }}
     steps:
+      # Serve solo menu.json, per sapere se il menu di oggi è già stato mandato
+      - name: Scarica menu.json
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: docs/menu.json
+          sparse-checkout-cone-mode: false
+
       - name: È l'ora giusta in Italia?
         id: controllo
         run: |
           ORA=$(date +%H)
+          OGGI=$(date +%F)   # es. 2026-11-06
           EVENTO="${{ github.event_name }}"
-          if [ "$EVENTO" = "schedule" ] && [ "$ORA" != "07" ]; then
-            echo "Sono le $ORA in Italia: questa partenza la salto."
+          # La data scritta in menu.json dall'ultima volta che il bot ha letto il menu
+          ULTIMA=$(python3 -c "import json; print(json.load(open('docs/menu.json')).get('data', ''))" 2>/dev/null || true)
+          if [ "$EVENTO" = "schedule" ] && { [ "$ORA" -lt 7 ] || [ "$ORA" -ge 11 ]; }; then
+            echo "Sono le $ORA in Italia: fuori dall'orario 7-11, questa partenza la salto."
+            echo "vai=no" >> "$GITHUB_OUTPUT"
+          elif [ "$EVENTO" = "schedule" ] && [ "$ULTIMA" = "$OGGI" ]; then
+            echo "Il menu di oggi ($OGGI) è già stato mandato: questa partenza la salto."
             echo "vai=no" >> "$GITHUB_OUTPUT"
           else
+            echo "Sono le $ORA in Italia: parto."
             echo "vai=si" >> "$GITHUB_OUTPUT"
           fi
           # Il menu si legge al mattino o quando lo lanci a mano, non quando modifichi la pagina
