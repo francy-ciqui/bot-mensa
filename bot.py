@@ -5,7 +5,7 @@
 #
 # Usa:
 #   - menu.py       -> per leggere il menu dal sito
-#   - segreti.env   -> per il token del bot e il numero della tua chat (solo sul tuo PC)
+#   - segreti.env   -> per il token del bot e i numeri delle chat (solo sul tuo PC)
 
 import json
 import os
@@ -76,15 +76,29 @@ def leggi_segreti():
 
 
 def manda_messaggio(testo):
-    """Manda un messaggio alla tua chat Telegram tramite il bot."""
+    """Manda il messaggio a tutte le chat Telegram della lista.
+
+    TELEGRAM_CHAT_ID può contenere più numeri separati da virgola,
+    es. "111111111,222222222" (tu e un amico). Ognuno deve prima
+    aver premuto "Avvia" sul bot, altrimenti Telegram non lo fa scrivere.
+    """
     segreti = leggi_segreti()
     indirizzo = f"https://api.telegram.org/bot{segreti['TELEGRAM_TOKEN']}/sendMessage"
-    risposta = requests.post(
-        indirizzo,
-        json={"chat_id": segreti["TELEGRAM_CHAT_ID"], "text": testo},
-        timeout=30,
-    )
-    risposta.raise_for_status()
+    chat = [c.strip() for c in segreti["TELEGRAM_CHAT_ID"].split(",") if c.strip()]
+
+    sbagliate = []
+    for chat_id in chat:
+        # Se una chat non va (es. qualcuno ha bloccato il bot), gli altri lo ricevono lo stesso
+        try:
+            risposta = requests.post(
+                indirizzo, json={"chat_id": chat_id, "text": testo}, timeout=30
+            )
+            risposta.raise_for_status()
+        except Exception as errore:
+            print(f"Non sono riuscito a scrivere alla chat {chat_id}: {errore}")
+            sbagliate.append(chat_id)
+    if sbagliate:
+        raise RuntimeError(f"Messaggio non arrivato a: {', '.join(sbagliate)}")
 
 
 def avvisa():
