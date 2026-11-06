@@ -1,0 +1,36 @@
+{
+  "data": "2026-11-06",
+  "giorno": "venerdì 6 novembre",
+  "aggiornato": "07:11",
+  "errore": null,
+  "pranzo": {
+    "Primi": [
+      "Pasta al sugo di gallinella",
+      "Pennette burro e parmigiano 🌱",
+      "Riso in bianco o al pomodoro"
+    ],
+    "Secondi": [
+      "Bocconcini di scorfano in umido",
+      "Torta rustica 🌱"
+    ],
+    "Contorni": [
+      "Patate e fagiolini",
+      "Insalata verde/mix"
+    ]
+  },
+  "cena": {
+    "Primi": [
+      "Pasta zucchine e gamberi",
+      "Pasta pomodoro e ricotta salata",
+      "Pasta / Pasta integrale in bianco o al pomodoro"
+    ],
+    "Secondi": [
+      "Merluzzo al forno",
+      "Frittata di spinaci"
+    ],
+    "Contorni": [
+      "Zucchine sabbiate",
+      "Insalata verde/mix"
+    ]
+  }
+}
