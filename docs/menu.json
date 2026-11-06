@@ -1,36 +1,139 @@
 {
   "data": "2026-11-06",
   "giorno": "venerdì 6 novembre",
-  "aggiornato": "07:16",
+  "aggiornato": "07:27",
   "errore": null,
   "pranzo": {
     "Primi": [
-      "Pasta al sugo di gallinella",
-      "Pennette burro e parmigiano 🌱",
-      "Riso in bianco o al pomodoro"
+      {
+        "nome": "Pasta al sugo di gallinella",
+        "allergeni": [
+          1,
+          2,
+          4,
+          6,
+          10,
+          12,
+          13,
+          14
+        ]
+      },
+      {
+        "nome": "Pennette burro e parmigiano 🌱",
+        "allergeni": [
+          1,
+          3,
+          6,
+          7,
+          10,
+          13
+        ]
+      },
+      {
+        "nome": "Riso in bianco o al pomodoro",
+        "allergeni": []
+      }
     ],
     "Secondi": [
-      "Bocconcini di scorfano in umido",
-      "Torta rustica 🌱"
+      {
+        "nome": "Bocconcini di scorfano in umido",
+        "allergeni": [
+          2,
+          4,
+          14
+        ]
+      },
+      {
+        "nome": "Torta rustica 🌱",
+        "allergeni": [
+          1,
+          3,
+          4,
+          6,
+          7,
+          9,
+          10
+        ]
+      }
     ],
     "Contorni": [
-      "Patate e fagiolini",
-      "Insalata verde/mix"
+      {
+        "nome": "Patate e fagiolini",
+        "allergeni": []
+      },
+      {
+        "nome": "Insalata verde/mix",
+        "allergeni": []
+      }
     ]
   },
   "cena": {
     "Primi": [
-      "Pasta zucchine e gamberi",
-      "Pasta pomodoro e ricotta salata",
-      "Pasta / Pasta integrale in bianco o al pomodoro"
+      {
+        "nome": "Pasta zucchine e gamberi",
+        "allergeni": [
+          1,
+          2,
+          4,
+          6,
+          9,
+          10,
+          12,
+          13,
+          14
+        ]
+      },
+      {
+        "nome": "Pasta pomodoro e ricotta salata",
+        "allergeni": [
+          1,
+          3,
+          6,
+          7,
+          10,
+          13
+        ]
+      },
+      {
+        "nome": "Pasta / Pasta integrale in bianco o al pomodoro",
+        "allergeni": [
+          1,
+          6,
+          10,
+          13
+        ]
+      }
     ],
     "Secondi": [
-      "Merluzzo al forno",
-      "Frittata di spinaci"
+      {
+        "nome": "Merluzzo al forno",
+        "allergeni": [
+          2,
+          4,
+          12,
+          14
+        ]
+      },
+      {
+        "nome": "Frittata di spinaci",
+        "allergeni": [
+          3,
+          7,
+          9
+        ]
+      }
     ],
     "Contorni": [
-      "Zucchine sabbiate",
-      "Insalata verde/mix"
+      {
+        "nome": "Zucchine sabbiate",
+        "allergeni": [
+          1
+        ]
+      },
+      {
+        "nome": "Insalata verde/mix",
+        "allergeni": []
+      }
     ]
   }
 }
