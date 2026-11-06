@@ -6,6 +6,8 @@
   --testo: #1c2422;
   --tenue: #5d6b67;
   --bordo: #d9e0dd;
+  --asporto: #fff4e0;
+  --asporto-bordo: #f0c987;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -15,6 +17,8 @@
     --testo: #e8eeec;
     --tenue: #9aa8a4;
     --bordo: #2e3a37;
+    --asporto: #2f2616;
+    --asporto-bordo: #6b5226;
   }
 }
 
@@ -98,7 +102,18 @@ legend { font-weight: 600; color: var(--verde); padding: 0; margin-bottom: 2px; 
   color: var(--testo);
 }
 /* orario di ritiro dell'asporto */
-.ritiro { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 4px; }
+/* riquadro a parte, colorato, per non confonderlo con i piatti */
+.ritiro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-top: 14px;
+  padding: 4px 12px;
+  background: var(--asporto);
+  border: 1px solid var(--asporto-bordo);
+  border-radius: 12px;
+}
 .spunta-ritiro {
   display: flex;
   align-items: center;
@@ -106,14 +121,14 @@ legend { font-weight: 600; color: var(--verde); padding: 0; margin-bottom: 2px; 
   min-height: 48px;
   font-weight: 600;
 }
-.spunta-ritiro input { width: 24px; height: 24px; accent-color: var(--verde); }
+.spunta-ritiro input { width: 24px; height: 24px; accent-color: #d9822b; }
 .ora-ritiro[hidden] { display: none; }
 .ora-ritiro {
   padding: 10px 12px;
   font-size: 1rem;
-  border: 1px solid var(--bordo);
+  border: 1px solid var(--asporto-bordo);
   border-radius: 10px;
-  background: var(--sfondo);
+  background: var(--carta);
   color: var(--testo);
 }
 
