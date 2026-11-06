@@ -7,14 +7,62 @@ let menu = null;
 // Entro che ora si prenota ogni pasto. Se cambiano, basta modificare qui.
 const SCADENZE = { pranzo: "10:00", cena: "17:00" };
 
-// --- Nome e intolleranze: si ricordano l'ultima cosa scritta (salvate nel telefono) ---
-// Se non hai mai scritto niente, le intolleranze partono da "nessuna"
-const PREDEFINITI = { nome: "", allergie: "nessuna", numero: "" };
+// I 14 allergeni di legge, con i numeri usati dalla mensa nel menu
+// (es. "Allergeni: 1-6-10" = glutine, soia, senape)
+const ALLERGENI = {
+  1: "glutine", 2: "crostacei", 3: "uova", 4: "pesce", 5: "arachidi",
+  6: "soia", 7: "latte/lattosio", 8: "frutta a guscio", 9: "sedano", 10: "senape",
+  11: "sesamo", 12: "solfiti", 13: "lupini", 14: "molluschi",
+};
+
+// --- Nome, numero e "altro": si ricordano l'ultima cosa scritta (salvate nel telefono) ---
 for (const campo of ["nome", "allergie", "numero"]) {
-  $(campo).value = localStorage.getItem("mensa-" + campo) || PREDEFINITI[campo];
+  let valore = localStorage.getItem("mensa-" + campo) || "";
+  if (campo === "allergie" && valore === "nessuna") valore = ""; // vecchio valore predefinito
+  $(campo).value = valore;
   $(campo).addEventListener("input", () => {
     localStorage.setItem("mensa-" + campo, $(campo).value.trim());
     aggiornaTutto();
+  });
+}
+
+// --- Pulsanti delle intolleranze: si toccano per accenderli o spegnerli ---
+let mieiAllergeni = JSON.parse(localStorage.getItem("mensa-allergeni") || "[]");
+for (const [numero, nome] of Object.entries(ALLERGENI)) {
+  const chip = document.createElement("button");
+  chip.type = "button";
+  chip.className = "chip";
+  chip.textContent = nome;
+  const n = Number(numero);
+  chip.setAttribute("aria-pressed", mieiAllergeni.includes(n));
+  chip.addEventListener("click", () => {
+    mieiAllergeni = mieiAllergeni.includes(n)
+      ? mieiAllergeni.filter((x) => x !== n)
+      : [...mieiAllergeni, n].sort((a, b) => a - b);
+    chip.setAttribute("aria-pressed", mieiAllergeni.includes(n));
+    localStorage.setItem("mensa-allergeni", JSON.stringify(mieiAllergeni));
+    aggiornaAvvisi();
+    aggiornaTutto();
+  });
+  $("allergeni").appendChild(chip);
+}
+
+// La riga del messaggio: "latte/lattosio, glutine, pomodoro" oppure "nessuna"
+function testoAllergie() {
+  const voci = mieiAllergeni.map((n) => ALLERGENI[n]);
+  const altro = $("allergie").value.trim();
+  if (altro) voci.push(altro);
+  return voci.length ? voci.join(", ") : "nessuna";
+}
+
+// Sotto ogni piatto che contiene uno dei tuoi allergeni compare "⚠️ contiene …"
+function aggiornaAvvisi() {
+  document.querySelectorAll(".piatto").forEach((riga) => {
+    const delPiatto = JSON.parse(riga.dataset.allergeni || "[]");
+    const problemi = delPiatto.filter((n) => mieiAllergeni.includes(n)).map((n) => ALLERGENI[n]);
+    const avviso = riga.querySelector(".attenzione");
+    avviso.textContent = problemi.length ? "⚠️ contiene " + problemi.join(", ") : "";
+    avviso.hidden = problemi.length === 0;
   });
 }
 
@@ -64,9 +112,12 @@ function mostraPasto(pasto) {
     gruppo.appendChild(titolo);
     const eContorno = etichetta(portata) === "Contorno";
 
-    for (const piatto of piatti) {
+    for (const voce of piatti) {
+      // (accetta anche il vecchio menu.json, dove il piatto era solo testo)
+      const piatto = typeof voce === "string" ? voce : voce.nome;
       const riga = document.createElement("div");
       riga.className = "piatto";
+      riga.dataset.allergeni = JSON.stringify(voce.allergeni || []);
 
       const scelta = document.createElement("label");
       const casella = document.createElement("input");
@@ -75,6 +126,10 @@ function mostraPasto(pasto) {
       casella.value = piatto;
       const testo = document.createElement("span");
       testo.textContent = piatto;
+      const attenzione = document.createElement("small");
+      attenzione.className = "attenzione";
+      attenzione.hidden = true;
+      testo.appendChild(attenzione);
       scelta.append(casella, testo);
       riga.appendChild(scelta);
 
@@ -127,7 +182,7 @@ function componi(pasto) {
     delete scelti[tipo];
   }
   for (const [tipo, piatti] of Object.entries(scelti)) righe.push(`${tipo}: ${piatti.join(", ")}`);
-  righe.push(`Intolleranze/allergie: ${$("allergie").value.trim() || "nessuna"}`);
+  righe.push(`Intolleranze/allergie: ${testoAllergie()}`);
   return righe.join("\n");
 }
 
@@ -224,6 +279,7 @@ async function avvia() {
   }
   mostraPasto("pranzo");
   mostraPasto("cena");
+  aggiornaAvvisi();
   aggiornaTutto();
   setInterval(aggiornaTutto, 60000); // ogni minuto aggiorna il "mancano …"
 }

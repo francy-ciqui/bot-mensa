@@ -28,15 +28,23 @@ def scarica_pagina():
 
 
 def pulisci_piatto(testo):
-    """Toglie i numeri degli allergeni (es. '1-6-10-13') e segna i piatti vegetariani."""
+    """Separa il nome del piatto dai numeri degli allergeni e segna i piatti vegetariani.
+
+    Esempio: 'Pasta al pomodoro Allergeni: 1-6-10 | Vegetariano'
+          -> {"nome": "Pasta al pomodoro 🌱", "allergeni": [1, 6, 10]}
+    """
     testo = " ".join(testo.split())                      # spazi doppi -> uno solo
     vegetariano = "Vegetariano" in testo
-    testo = testo.replace("Vegetariano", "")
-    testo = re.sub(r"\s\d+(-\d+)*\b", "", testo)         # via i codici allergeni
-    testo = testo.strip()
+    testo = testo.replace("Vegetariano", "").replace("Allergeni:", "").replace("|", "")
+    allergeni = []
+    for codici in re.findall(r"\s(\d+(?:-\d+)*)\b", testo):  # es. "1-6-10"
+        allergeni += [int(n) for n in codici.split("-")]
+    testo = re.sub(r"\s\d+(-\d+)*\b", "", testo)         # via i numeri dal nome
+    testo = " ".join(testo.split())
     if vegetariano:
+        testo = re.sub(r"\sV$", "", testo)               # a volte c'è una "V" in più
         testo += " 🌱"
-    return testo
+    return {"nome": testo, "allergeni": sorted(set(allergeni))}
 
 
 def estrai_menu(html, giorno):
@@ -70,7 +78,7 @@ def estrai_menu(html, giorno):
             lista = intestazione.find_next_sibling("ul")
             if lista:
                 piatti = [pulisci_piatto(voce.get_text(" ")) for voce in lista.find_all("li")]
-                portate[intestazione.get_text(strip=True)] = [p for p in piatti if p]
+                portate[intestazione.get_text(strip=True)] = [p for p in piatti if p["nome"]]
         risultato[servizio] = portate
 
     return risultato
@@ -90,7 +98,9 @@ def scrivi_menu(menu, giorno):
         for portata, piatti in menu[servizio].items():
             righe.append(f"{portata}:")
             for piatto in piatti:
-                righe.append(f"  • {piatto}")
+                # (accetta anche il vecchio formato, dove il piatto era solo testo)
+                nome = piatto["nome"] if isinstance(piatto, dict) else piatto
+                righe.append(f"  • {nome}")
     return "\n".join(righe)
 
 

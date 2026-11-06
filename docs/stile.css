@@ -130,3 +130,23 @@ pre {
 .copia { background: var(--bordo); color: var(--testo); }
 .whatsapp { background: #25d366; color: #073b1c; }
 .pulsanti button:disabled, .pulsanti a.disattivo { opacity: .4; cursor: default; }
+
+/* pulsanti delle intolleranze */
+.titolo-campo { font-weight: 600; margin: 4px 0 6px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.chip {
+  min-height: 40px;
+  padding: 6px 14px;
+  border: 1px solid var(--bordo);
+  border-radius: 20px;
+  background: var(--sfondo);
+  color: var(--testo);
+  font-size: .95rem;
+  cursor: pointer;
+}
+.chip[aria-pressed="true"] { background: var(--verde); border-color: var(--verde); color: #fff; font-weight: 600; }
+.chip[aria-pressed="true"]::before { content: "✓ "; }
+
+/* avviso sotto il piatto che contiene un tuo allergene */
+.attenzione { display: block; color: #c62828; font-weight: 600; font-size: .85rem; }
+.attenzione[hidden] { display: none; }
