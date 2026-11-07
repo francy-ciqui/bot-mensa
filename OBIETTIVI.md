@@ -4,8 +4,22 @@
 Le prenotazioni non si fanno sul sito della mensa: si fanno con un messaggio WhatsApp al numero della mensa.
 
 1. Ogni mattina verso le 7:15 il bot (su GitHub Actions) legge il menu del giorno dal sito e lo salva in `docs/menu.json`. Se GitHub parte in ritardo, il bot parte lo stesso fino alle 11, una volta sola al giorno.
+   Prima controlla che il menu di oggi sia già sui due siti della mensa. Se manca (di solito il lunedì,
+   quando la settimana nuova non è ancora caricata) non manda niente e lascia il lavoro alla partenza dopo.
+   All'ultima partenza della mattina manda comunque quello che c'è.
+   **A che ora la mensa carica il menu:** GitHub → Actions → Menu mensa → apri la partenza del lunedì →
+   «orario» → «È l'ora giusta in Italia?». C'è scritto per esempio «Alle 07:16 il menu di oggi non è ancora
+   sul sito» oppure «Alle 08:20 il menu di oggi è sul sito».
 2. Subito dopo GitHub pubblica la pagina web (cartella `docs/`) su GitHub Pages.
 3. Il bot manda su Telegram il menu e il link alla pagina a tutte le chat del segreto `TELEGRAM_CHAT_ID` (numeri separati da virgola).
+   Nel messaggio c'è il menu **completo** della mensa (dal sito cimasristorazione.com) e i piatti
+   che si possono prendere **d'asporto** sono in evidenza: 🥡 e grassetto. Se quel sito non risponde,
+   il bot manda il messaggio di prima, con il solo menu d'asporto. La pagina web non cambia: mostra solo l'asporto.
+   **Il lunedì**, prima del solito messaggio del giorno, il bot manda anche la **tabella** del menu completo
+   di tutta la settimana: un'immagine con i giorni nelle colonne e Primi/Secondi/Contorni di pranzo e cena
+   nelle righe (vegetariani in verde). Qui l'asporto non è segnato. È un'immagine perché Telegram
+   nel testo non sa fare tabelle. La disegna `tabella.py`.
+   Per provarlo un altro giorno: GitHub → Actions → Menu mensa → Run workflow → spunta «Manda anche il menu di tutta la settimana».
 4. Nella pagina spunti i piatti di pranzo e/o cena. La pagina scrive il messaggio di prenotazione.
 5. Pranzo e cena hanno ciascuno il suo messaggio, con l'orario limite (pranzo entro le 10:00, cena entro le 17:00, da confermare).
 6. Premi **Invia su WhatsApp**: si apre direttamente la chat della mensa e invii tu. In alternativa premi **Copia**.

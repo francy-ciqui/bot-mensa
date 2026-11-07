@@ -6,12 +6,19 @@ on:
   # In più a volte parte in ritardo (anche di un'ora) o salta una partenza.
   # Quindi lo facciamo partire tre volte: la prima che arriva tra le 7 e le 11 italiane
   # manda il menu, le altre vedono che oggi è già fatto e si fermano.
+  # Se il menu di oggi non è ancora sul sito (succede il lunedì), la partenza si ferma
+  # e il lavoro lo fa quella dopo. Nel registro (Actions) resta scritto a che ora l'ha trovato.
   schedule:
     - cron: "15 5 * * *"   # 7:15 in Italia d'estate (6:15 d'inverno: troppo presto, salta)
     - cron: "15 6 * * *"   # 7:15 in Italia d'inverno (8:15 d'estate: riserva)
     - cron: "15 7 * * *"   # riserva: 8:15 d'inverno, 9:15 d'estate
   # Permette di lanciarlo a mano dal sito di GitHub (pulsante "Run workflow")
   workflow_dispatch:
+    inputs:
+      settimana:
+        description: "Manda anche il menu di tutta la settimana (per provarlo in un giorno che non è lunedì)"
+        type: boolean
+        default: false
   # Quando cambi la pagina (cartella docs/), la ripubblica subito, senza leggere il menu
   push:
     branches: [main]
@@ -53,13 +60,46 @@ jobs:
           EVENTO="${{ github.event_name }}"
           # La data scritta in menu.json dall'ultima volta che il bot ha letto il menu
           ULTIMA=$(python3 -c "import json; print(json.load(open('docs/menu.json')).get('data', ''))" 2>/dev/null || true)
+
+          # Il menu di oggi è già sui due siti della mensa? (cerca la data di oggi nelle pagine)
+          # Serve il lunedì: se la settimana nuova non è ancora caricata, si aspetta la partenza dopo.
+          PRONTO=si
+          MANCA=""
+          ULTIMA_PARTENZA=no
+          # La partenza "15 7" è l'ultima della mattina; a mano si parte sempre
+          [ "${{ github.event.schedule }}" = "15 7 * * *" ] && ULTIMA_PARTENZA=si
+          if [ "$EVENTO" = "schedule" ] && [ "$ORA" -ge 7 ] && [ "$ORA" -lt 11 ] && [ "$ULTIMA" != "$OGGI" ]; then
+            MESI=(gennaio febbraio marzo aprile maggio giugno luglio agosto settembre ottobre novembre dicembre)
+            MESE=${MESI[$((10#$(date +%m) - 1))]}
+            GIORNO=$((10#$(date +%d)))     # es. 9
+            ANNO=$(date +%Y)
+            AGENTE="BotMensaPersonale/1.0 (uso personale, 1 richiesta al giorno)"
+            # Menu completo: scrive "09 Novembre 2026"
+            if ! curl -sL -A "$AGENTE" --max-time 30 "https://www.cimasristorazione.com/menu-mense/universita-chieti/" \
+                 | grep -qi "$(date +%d) $MESE $ANNO"; then
+              PRONTO=no; MANCA="menu completo"
+            fi
+            # Asporto: scrive "LUNEDÌ 9 Novembre 2026" (senza lo zero)
+            if ! curl -sL -A "$AGENTE" --max-time 30 "https://cimas-meal.it/chieti" \
+                 | grep -qiE "[^0-9]$GIORNO $MESE $ANNO"; then
+              PRONTO=no; MANCA="${MANCA:+$MANCA e }asporto"
+            fi
+          fi
+
           if [ "$EVENTO" = "schedule" ] && { [ "$ORA" -lt 7 ] || [ "$ORA" -ge 11 ]; }; then
             echo "Sono le $ORA in Italia: fuori dall'orario 7-11, questa partenza la salto."
             echo "vai=no" >> "$GITHUB_OUTPUT"
           elif [ "$EVENTO" = "schedule" ] && [ "$ULTIMA" = "$OGGI" ]; then
             echo "Il menu di oggi ($OGGI) è già stato mandato: questa partenza la salto."
             echo "vai=no" >> "$GITHUB_OUTPUT"
+          elif [ "$EVENTO" = "schedule" ] && [ "$PRONTO" = "no" ] && [ "$ULTIMA_PARTENZA" = "no" ]; then
+            # Succede il lunedì, se la mensa non ha ancora caricato la settimana nuova.
+            # Non manda niente: ci pensa la partenza dopo, che c'è già.
+            echo "Alle $(date +%H:%M) il menu di oggi non è ancora sul sito ($MANCA): riprovo alla prossima partenza."
+            echo "vai=no" >> "$GITHUB_OUTPUT"
           else
+            [ "$PRONTO" = "si" ] && echo "Alle $(date +%H:%M) il menu di oggi è sul sito."
+            [ "$PRONTO" = "no" ] && echo "Alle $(date +%H:%M) il menu di oggi non è ancora sul sito ($MANCA), ma è l'ultima partenza: mando quello che c'è."
             echo "Sono le $ORA in Italia: parto."
             echo "vai=si" >> "$GITHUB_OUTPUT"
           fi
@@ -116,6 +156,22 @@ jobs:
       - name: Pubblica la pagina su GitHub Pages
         id: pubblica
         uses: actions/deploy-pages@v4
+
+      # Il lunedì, prima del messaggio del giorno, il menu di tutta la settimana.
+      # (Una volta sola: le partenze di riserva si fermano prima, perché oggi è già fatto.)
+      - name: Il lunedì manda il menu della settimana su Telegram
+        if: always() && env.LEGGI == 'si'
+        continue-on-error: true
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          FORZA: ${{ inputs.settimana }}
+        run: |
+          if [ "$(date +%u)" = "1" ] || [ "$FORZA" = "true" ]; then
+            python bot.py settimana
+          else
+            echo "Oggi non è lunedì: il menu della settimana non parte."
+          fi
 
       # Il promemoria parte anche se qualcosa sopra è andato storto
       - name: Manda il link su Telegram

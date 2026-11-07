@@ -91,6 +91,111 @@ def estrai_menu(html, giorno):
     return risultato
 
 
+# Il menu COMPLETO della mensa (in sala), su un altro sito. Serve solo al messaggio Telegram:
+# la pagina web continua a usare il menu d'asporto qui sopra.
+INDIRIZZO_COMPLETO = "https://www.cimasristorazione.com/menu-mense/universita-chieti/"
+
+
+def scarica_completo():
+    """Scarica la pagina con il menu completo della settimana."""
+    risposta = requests.get(INDIRIZZO_COMPLETO, headers=INTESTAZIONI, timeout=30)
+    risposta.raise_for_status()
+    return risposta.text
+
+
+def estrai_completo(html, giorno):
+    """Come estrai_menu, ma dal sito del menu completo.
+
+    Sulla pagina ogni giorno è un riquadro con la data (es. "07 Novembre 2026")
+    e due linguette, "pranzo-N" e "cena-N", con Primi, Secondi e Contorni.
+    """
+    pagina = BeautifulSoup(html, "html.parser")
+    data_cercata = f"{giorno.day:02d} {MESI[giorno.month - 1]} {giorno.year}"  # es. "07 novembre 2026"
+    risultato = {}
+    for riquadro in pagina.select("div.day-menu"):
+        data = riquadro.select_one("span.date")
+        if not data or " ".join(data.get_text().split()).lower() != data_cercata:
+            continue
+        for linguetta in riquadro.select("div.tab-pane"):
+            servizio = "cena" if linguetta.get("id", "").startswith("cena") else "pranzo"
+            portate = {}
+            for intestazione in linguetta.find_all("h5"):
+                lista = intestazione.find_next_sibling("ul")
+                if not lista:
+                    continue
+                piatti = []
+                for voce in lista.find_all("li"):
+                    # Una "R" da sola accanto al piatto è una sigla del sito: la togliamo
+                    testo = re.sub(r"\sR(?=\s|$)", " ", " " + voce.get_text(" ")).strip()
+                    piatto = pulisci_piatto(testo)
+                    if piatto["nome"]:
+                        piatti.append(piatto)
+                portate[intestazione.get_text(strip=True)] = piatti
+            risultato[servizio] = portate
+    return risultato
+
+
+def _parole(nome):
+    """Le parole di un piatto, per confrontare due siti che lo scrivono in modo un po' diverso.
+
+    Es. "Pasta / Pasta integrale in bianco o al pomodoro" e
+        "Pasta integrale/ Pasta in bianco o al pomodoro" danno le stesse parole.
+    Lettere da sole ("e", "o", la sigla "R") non contano, e di ogni parola si guarda
+    solo l'inizio: così "Sovracosce di pollo" e "Sovracoscia di pollo" sono lo stesso piatto.
+    """
+    parole = re.findall(r"[a-zàèéìòù]+", nome.lower())
+    return frozenset(p[:5] for p in parole if len(p) > 1)
+
+
+def segna_asporto(completo, asporto):
+    """Segna con "asporto": True i piatti del menu completo che ci sono anche d'asporto.
+
+    Se un piatto d'asporto non si trova nel menu completo, lo aggiunge in fondo
+    alla sua portata, così nel messaggio non si perde niente.
+    """
+    for servizio, portate in asporto.items():
+        completo.setdefault(servizio, {})
+        for portata, piatti in portate.items():
+            lista = completo[servizio].setdefault(portata, [])
+            for piatto in piatti:
+                uguale = next((p for p in lista if _parole(p["nome"]) == _parole(piatto["nome"])), None)
+                if uguale:
+                    uguale["asporto"] = True
+                else:
+                    nome = re.sub(r"\sR(?=\s|$)", "", piatto["nome"])   # via la sigla "R"
+                    lista.append({**piatto, "nome": nome, "asporto": True})
+    return completo
+
+
+LEGENDA = "<b>in grassetto</b> 🥡 = anche d'asporto"
+
+
+def scrivi_menu_evidenziato(menu, giorno):
+    """Il menu completo per Telegram (formato HTML), con i piatti d'asporto in evidenza."""
+    righe = [f"🍽️ <b>Menu mensa Chieti - {giorno.strftime('%d/%m/%Y')}</b>", LEGENDA]
+    return "\n".join(righe) + "\n" + scrivi_pasti(menu)
+
+
+def scrivi_pasti(menu):
+    """Pranzo e cena di un giorno, piatto per piatto (formato HTML per Telegram)."""
+    from html import escape
+
+    righe = []
+    for servizio in ["pranzo", "cena"]:
+        if not menu.get(servizio):
+            continue
+        righe.append("")
+        righe.append("☀️ <b>PRANZO</b>" if servizio == "pranzo" else "🌙 <b>CENA</b>")
+        for portata, piatti in menu[servizio].items():
+            # quote=False: Telegram non capisce &#x27; e mostrerebbe il codice al posto dell'apostrofo
+            righe.append(f"{escape(portata, quote=False)}:")
+            for piatto in piatti:
+                nome = escape(piatto["nome"], quote=False)
+                # 🥡 a destra del nome, accanto a 🌱 e ❄️ se ci sono
+                righe.append(f"  • <b>{nome} 🥡</b>" if piatto.get("asporto") else f"  • {nome}")
+    return "\n".join(righe)
+
+
 def scrivi_menu(menu, giorno):
     """Trasforma il menu in un testo leggibile."""
     if not menu:
