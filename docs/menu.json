@@ -1,97 +1,28 @@
 {
-  "data": "2026-11-06",
-  "giorno": "venerdì 6 novembre",
-  "aggiornato": "18:25",
+  "data": "2026-11-07",
+  "giorno": "sabato 7 novembre",
+  "aggiornato": "07:59",
   "errore": null,
   "pranzo": {
     "Primi": [
       {
-        "nome": "Pasta al sugo di gallinella",
-        "allergeni": [
-          1,
-          2,
-          4,
-          6,
-          10,
-          12,
-          13,
-          14
-        ]
-      },
-      {
-        "nome": "Pennette burro e parmigiano 🌱",
+        "nome": "Pasta al ragù",
         "allergeni": [
           1,
           3,
-          6,
-          7,
-          10,
-          13
-        ]
-      },
-      {
-        "nome": "Riso in bianco o al pomodoro",
-        "allergeni": []
-      }
-    ],
-    "Secondi": [
-      {
-        "nome": "Bocconcini di scorfano in umido",
-        "allergeni": [
-          2,
-          4,
-          14
-        ]
-      },
-      {
-        "nome": "Torta rustica 🌱",
-        "allergeni": [
-          1,
-          3,
-          4,
-          6,
-          7,
-          9,
-          10
-        ]
-      }
-    ],
-    "Contorni": [
-      {
-        "nome": "Patate e fagiolini",
-        "allergeni": []
-      },
-      {
-        "nome": "Insalata verde/mix",
-        "allergeni": []
-      }
-    ]
-  },
-  "cena": {
-    "Primi": [
-      {
-        "nome": "Pasta zucchine e gamberi",
-        "allergeni": [
-          1,
-          2,
-          4,
           6,
           9,
           10,
           12,
-          13,
-          14
+          13
         ]
       },
       {
-        "nome": "Pasta pomodoro e ricotta salata",
+        "nome": "Riso all’ortolana 🌱",
         "allergeni": [
-          1,
           3,
-          6,
           7,
-          10,
-          13
+          9
         ]
       },
       {
@@ -106,28 +37,73 @@
     ],
     "Secondi": [
       {
-        "nome": "Merluzzo al forno",
+        "nome": "Arrosto di maiale al forno",
         "allergeni": [
-          2,
-          4,
-          12,
-          14
+          9,
+          12
         ]
       },
       {
-        "nome": "Frittata di spinaci",
+        "nome": "Primosale alla pizzaiola",
         "allergeni": [
-          3,
-          7,
-          9
+          7
         ]
       }
     ],
     "Contorni": [
       {
-        "nome": "Zucchine sabbiate",
+        "nome": "Cicoria ripassata",
         "allergeni": [
-          1
+          9
+        ]
+      },
+      {
+        "nome": "Insalata verde/mix",
+        "allergeni": []
+      }
+    ]
+  },
+  "cena": {
+    "Primi": [
+      {
+        "nome": "Vellutata di carote con crostini",
+        "allergeni": [
+          1,
+          9
+        ]
+      },
+      {
+        "nome": "Pasta cacio e pepe",
+        "allergeni": [
+          1,
+          6,
+          7,
+          10,
+          13
+        ]
+      },
+      {
+        "nome": "Riso in bianco o al pomodoro",
+        "allergeni": []
+      }
+    ],
+    "Secondi": [
+      {
+        "nome": "Pollo alla diavola",
+        "allergeni": []
+      },
+      {
+        "nome": "Uova al purgatorio",
+        "allergeni": [
+          3
+        ]
+      }
+    ],
+    "Contorni": [
+      {
+        "nome": "Piselli con cipolla al tegame",
+        "allergeni": [
+          9
         ]
       },
       {
