@@ -7,8 +7,8 @@ Le prenotazioni non si fanno sul sito della mensa: si fanno con un messaggio Wha
    Prima controlla che il menu di oggi sia già sui due siti della mensa. Per l'asporto non basta la data:
    il lunedì presto la pagina mostra già il giorno ma senza piatti, quindi il bot controlla che ci siano i piatti.
    Se manca qualcosa non manda niente e lascia il lavoro alla partenza dopo; l'ultima della mattina manda comunque.
-   **Il lunedì il messaggio arriva alle 9:00** e non alle 7:15, perché la mensa aggiorna la pagina
-   dell'asporto dopo le 8. Gli altri giorni arriva verso le 7:15. Sempre un solo messaggio al giorno
+   **Il lunedì** la mensa aggiorna la pagina dell'asporto dopo le 8: alle 8:30 il bot controlla e,
+   se è tutto pronto, manda il messaggio; altrimenti lo manda alle 9:00 con quello che c'è. Gli altri giorni arriva verso le 7:15. Sempre un solo messaggio al giorno
    (il lunedì due: prima la tabella della settimana, poi il menu del giorno).
    **A che ora la mensa carica il menu:** GitHub → Actions → Menu mensa → apri la partenza del lunedì →
    «orario» → «È l'ora giusta in Italia?». C'è scritto per esempio «Alle 07:16 il menu di oggi non è ancora
