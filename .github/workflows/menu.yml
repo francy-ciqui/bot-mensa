@@ -4,20 +4,20 @@ name: Menu mensa
 on:
   # GitHub ragiona in ora inglese (UTC), che cambia rispetto all'Italia con l'ora legale.
   # In più a volte parte in ritardo (anche di un'ora) o salta una partenza.
-  # Quindi lo facciamo partire ogni mezz'ora: la prima che arriva tra le 7 e le 11 italiane
+  # Quindi lo facciamo partire tre volte: la prima che arriva nell'orario giusto
   # manda il menu, le altre vedono che oggi è già fatto e si fermano.
-  # Se il menu di oggi non è ancora sul sito (succede il lunedì: l'asporto arriva dopo le 8),
-  # la partenza si ferma e il lavoro lo fa quella dopo, mezz'ora più tardi.
-  # La prima partenza dalle 9 in poi manda comunque (la prenotazione del pranzo è entro le 10).
-  # Nel registro (Actions) resta scritto a che ora l'ha trovato.
+  # Da martedì a domenica: dalle 7:15. Se il menu non è ancora sul sito si aspetta la partenza dopo;
+  # l'ultima della mattina manda comunque quello che c'è.
+  # Il lunedì: alle 9:00, perché la pagina dell'asporto la mensa la aggiorna dopo le 8.
   schedule:
-    - cron: "15 5 * * *"   # d'estate 7:15  | d'inverno 6:15 (troppo presto, salta)
-    - cron: "45 5 * * *"   # d'estate 7:45  | d'inverno 6:45 (troppo presto, salta)
-    - cron: "15 6 * * *"   # d'estate 8:15  | d'inverno 7:15
-    - cron: "45 6 * * *"   # d'estate 8:45  | d'inverno 7:45
-    - cron: "15 7 * * *"   # d'estate 9:15  | d'inverno 8:15
-    - cron: "45 7 * * *"   # d'estate 9:45  | d'inverno 8:45
-    - cron: "15 8 * * *"   # d'estate 10:15 | d'inverno 9:15
+    # da martedì a domenica (0 = domenica, 2-6 = da martedì a sabato)
+    - cron: "15 5 * * 0,2-6"   # d'estate 7:15  | d'inverno 6:15 (troppo presto, salta)
+    - cron: "15 6 * * 0,2-6"   # d'estate 8:15  | d'inverno 7:15
+    - cron: "15 7 * * 0,2-6"   # d'estate 9:15  | d'inverno 8:15 (ultima: manda comunque)
+    # il lunedì
+    - cron: "0 7 * * 1"        # d'estate 9:00  | d'inverno 8:00 (troppo presto, salta)
+    - cron: "0 8 * * 1"        # d'estate 10:00 (riserva) | d'inverno 9:00
+    - cron: "0 9 * * 1"        # d'estate 11:00 (salta)   | d'inverno 10:00 (riserva)
   # Permette di lanciarlo a mano dal sito di GitHub (pulsante "Run workflow")
   workflow_dispatch:
     inputs:
@@ -78,9 +78,14 @@ jobs:
           PRONTO=si
           MANCA=""
           ULTIMA_PARTENZA=no
-          # Dalle 9 in poi non si aspetta più: si manda quello che c'è. A mano si parte sempre.
-          [ "$ORA" -ge 9 ] && ULTIMA_PARTENZA=si
-          if [ "$EVENTO" = "schedule" ] && [ "$ORA" -ge 7 ] && [ "$ORA" -lt 11 ] && [ "$ULTIMA" != "$OGGI" ]; then
+          # Da che ora si può mandare: il lunedì dalle 9, gli altri giorni dalle 7
+          INIZIO=7
+          [ "$(date +%u)" = "1" ] && INIZIO=9
+          # Quando si manda comunque quello che c'è: il lunedì sempre (sono già le 9),
+          # gli altri giorni all'ultima partenza della mattina ("15 7"). A mano si parte sempre.
+          [ "$INIZIO" = "9" ] && ULTIMA_PARTENZA=si
+          [ "${{ github.event.schedule }}" = "15 7 * * 0,2-6" ] && ULTIMA_PARTENZA=si
+          if [ "$EVENTO" = "schedule" ] && [ "$ORA" -ge "$INIZIO" ] && [ "$ORA" -lt 11 ] && [ "$ULTIMA" != "$OGGI" ]; then
             MESI=(gennaio febbraio marzo aprile maggio giugno luglio agosto settembre ottobre novembre dicembre)
             MESE=${MESI[$((10#$(date +%m) - 1))]}
             ANNO=$(date +%Y)
@@ -101,8 +106,8 @@ jobs:
             fi
           fi
 
-          if [ "$EVENTO" = "schedule" ] && { [ "$ORA" -lt 7 ] || [ "$ORA" -ge 11 ]; }; then
-            echo "Sono le $ORA in Italia: fuori dall'orario 7-11, questa partenza la salto."
+          if [ "$EVENTO" = "schedule" ] && { [ "$ORA" -lt "$INIZIO" ] || [ "$ORA" -ge 11 ]; }; then
+            echo "Sono le $ORA in Italia: fuori dall'orario $INIZIO-11, questa partenza la salto."
             echo "vai=no" >> "$GITHUB_OUTPUT"
           elif [ "$EVENTO" = "schedule" ] && [ "$ULTIMA" = "$OGGI" ]; then
             echo "Il menu di oggi ($OGGI) è già stato mandato: questa partenza la salto."

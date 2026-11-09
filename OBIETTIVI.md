@@ -6,9 +6,10 @@ Le prenotazioni non si fanno sul sito della mensa: si fanno con un messaggio Wha
 1. Ogni mattina verso le 7:15 il bot (su GitHub Actions) legge il menu del giorno dal sito e lo salva in `docs/menu.json`. Se GitHub parte in ritardo, il bot parte lo stesso fino alle 11, una volta sola al giorno.
    Prima controlla che il menu di oggi sia già sui due siti della mensa. Per l'asporto non basta la data:
    il lunedì presto la pagina mostra già il giorno ma senza piatti, quindi il bot controlla che ci siano i piatti.
-   Se manca qualcosa (di solito il lunedì: l'asporto arriva dopo le 8) non manda niente e riprova mezz'ora dopo.
-   Le partenze sono ogni mezz'ora; la prima dalle 9 in poi manda comunque quello che c'è
-   (la prenotazione del pranzo è entro le 10). Gli altri giorni il messaggio arriva sempre verso le 7:15.
+   Se manca qualcosa non manda niente e lascia il lavoro alla partenza dopo; l'ultima della mattina manda comunque.
+   **Il lunedì il messaggio arriva alle 9:00** e non alle 7:15, perché la mensa aggiorna la pagina
+   dell'asporto dopo le 8. Gli altri giorni arriva verso le 7:15. Sempre un solo messaggio al giorno
+   (il lunedì due: prima la tabella della settimana, poi il menu del giorno).
    **A che ora la mensa carica il menu:** GitHub → Actions → Menu mensa → apri la partenza del lunedì →
    «orario» → «È l'ora giusta in Italia?». C'è scritto per esempio «Alle 07:16 il menu di oggi non è ancora
    sul sito» oppure «Alle 08:20 il menu di oggi è sul sito».
