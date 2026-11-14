@@ -1,73 +1,26 @@
 {
-  "data": "2026-11-13",
-  "giorno": "venerdì 13 novembre",
-  "aggiornato": "07:14",
+  "data": "2026-11-14",
+  "giorno": "sabato 14 novembre",
+  "aggiornato": "07:02",
   "errore": null,
   "pranzo": {
     "Primi": [
       {
-        "nome": "Pasta alla carbonara",
+        "nome": "Maccheroni al fumé",
         "allergeni": [
           1,
+          6,
+          7,
+          10,
+          13
+        ]
+      },
+      {
+        "nome": "Risotto al ragù di carote e patate 🌱",
+        "allergeni": [
           3,
-          6,
           7,
-          10,
-          13
-        ]
-      },
-      {
-        "nome": "Riso in bianco o al pomodoro",
-        "allergeni": []
-      }
-    ],
-    "Secondi": [
-      {
-        "nome": "Hamburger",
-        "allergeni": [
-          1
-        ]
-      }
-    ],
-    "Contorni": [
-      {
-        "nome": "Mix di legumi in insalata",
-        "allergeni": [
-          1,
-          6,
-          8,
-          9,
-          10,
-          11,
-          13
-        ]
-      },
-      {
-        "nome": "Insalata verde/mix",
-        "allergeni": []
-      }
-    ]
-  },
-  "cena": {
-    "Primi": [
-      {
-        "nome": "Pasta con vongole",
-        "allergeni": [
-          1,
-          4,
-          6,
-          10,
-          13
-        ]
-      },
-      {
-        "nome": "Pasta alla cenere 🌱",
-        "allergeni": [
-          1,
-          6,
-          7,
-          10,
-          13
+          9
         ]
       },
       {
@@ -82,35 +35,77 @@
     ],
     "Secondi": [
       {
-        "nome": "Polpette tonno e patate",
+        "nome": "Arrostino di maiale al latte",
         "allergeni": [
-          1,
-          2,
-          3,
-          4,
-          14
+          7,
+          9
         ]
       },
       {
-        "nome": "Nido di uova con spinaci 🌱",
+        "nome": "Frittata con patate",
         "allergeni": [
           3,
-          7,
-          9
+          7
         ]
       }
     ],
     "Contorni": [
       {
-        "nome": "Cannellini speziati",
+        "nome": "Patate fritte",
+        "allergeni": []
+      },
+      {
+        "nome": "Insalata verde/mix",
+        "allergeni": []
+      }
+    ]
+  },
+  "cena": {
+    "Primi": [
+      {
+        "nome": "Pasta al forno",
         "allergeni": [
           1,
+          3,
           6,
-          8,
+          7,
+          9,
           10,
-          11,
           13
         ]
+      },
+      {
+        "nome": "Risotto ai quattro formaggi 🌱",
+        "allergeni": [
+          3,
+          7,
+          9
+        ]
+      },
+      {
+        "nome": "Riso in bianco o al pomodoro",
+        "allergeni": []
+      }
+    ],
+    "Secondi": [
+      {
+        "nome": "Cosci e fusi di pollo al forno",
+        "allergeni": [
+          12
+        ]
+      },
+      {
+        "nome": "Frittata di zucchine",
+        "allergeni": [
+          3,
+          7
+        ]
+      }
+    ],
+    "Contorni": [
+      {
+        "nome": "Spinaci al limone",
+        "allergeni": []
       },
       {
         "nome": "Insalata verde/mix",
