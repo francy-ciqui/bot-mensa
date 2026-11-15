@@ -1,12 +1,12 @@
 {
-  "data": "2026-11-14",
-  "giorno": "sabato 14 novembre",
-  "aggiornato": "07:02",
+  "data": "2026-11-15",
+  "giorno": "domenica 15 novembre",
+  "aggiornato": "07:04",
   "errore": null,
   "pranzo": {
     "Primi": [
       {
-        "nome": "Maccheroni al fumé",
+        "nome": "Pasta alla vesuviana",
         "allergeni": [
           1,
           6,
@@ -16,12 +16,64 @@
         ]
       },
       {
-        "nome": "Risotto al ragù di carote e patate 🌱",
+        "nome": "Pasta ai quattro formaggi 🌱",
+        "allergeni": [
+          1,
+          3,
+          6,
+          7,
+          10,
+          13
+        ]
+      },
+      {
+        "nome": "Riso in bianco o al pomodoro",
+        "allergeni": []
+      }
+    ],
+    "Secondi": [
+      {
+        "nome": "Alette di pollo piccanti",
+        "allergeni": [
+          12
+        ]
+      },
+      {
+        "nome": "Involtini di melanzane",
         "allergeni": [
           3,
-          7,
+          7
+        ]
+      }
+    ],
+    "Contorni": [
+      {
+        "nome": "Broccoletti ripassati",
+        "allergeni": [
           9
         ]
+      },
+      {
+        "nome": "Insalata verde/mix",
+        "allergeni": []
+      }
+    ]
+  },
+  "cena": {
+    "Primi": [
+      {
+        "nome": "Pasta broccoli e salsiccia",
+        "allergeni": [
+          1,
+          6,
+          9,
+          10,
+          13
+        ]
+      },
+      {
+        "nome": "Pasta aglio, olio e peperoncino 🌱",
+        "allergeni": []
       },
       {
         "nome": "Pasta / Pasta integrale in bianco o al pomodoro",
@@ -35,76 +87,27 @@
     ],
     "Secondi": [
       {
-        "nome": "Arrostino di maiale al latte",
-        "allergeni": [
-          7,
-          9
-        ]
-      },
-      {
-        "nome": "Frittata con patate",
-        "allergeni": [
-          3,
-          7
-        ]
-      }
-    ],
-    "Contorni": [
-      {
-        "nome": "Patate fritte",
-        "allergeni": []
-      },
-      {
-        "nome": "Insalata verde/mix",
-        "allergeni": []
-      }
-    ]
-  },
-  "cena": {
-    "Primi": [
-      {
-        "nome": "Pasta al forno",
+        "nome": "Spinacine artigianali",
         "allergeni": [
           1,
           3,
-          6,
-          7,
-          9,
-          10,
-          13
-        ]
-      },
-      {
-        "nome": "Risotto ai quattro formaggi 🌱",
-        "allergeni": [
-          3,
           7,
           9
         ]
       },
       {
-        "nome": "Riso in bianco o al pomodoro",
-        "allergeni": []
-      }
-    ],
-    "Secondi": [
-      {
-        "nome": "Cosci e fusi di pollo al forno",
+        "nome": "Piadina romagnola",
         "allergeni": [
-          12
-        ]
-      },
-      {
-        "nome": "Frittata di zucchine",
-        "allergeni": [
-          3,
-          7
+          1,
+          6,
+          7,
+          10
         ]
       }
     ],
     "Contorni": [
       {
-        "nome": "Spinaci al limone",
+        "nome": "Cavolini di Bruxelles",
         "allergeni": []
       },
       {
