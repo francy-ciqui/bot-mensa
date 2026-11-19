@@ -1,90 +1,25 @@
 {
-  "data": "2026-11-18",
-  "giorno": "mercoledì 18 novembre",
-  "aggiornato": "07:19",
+  "data": "2026-11-19",
+  "giorno": "giovedì 19 novembre",
+  "aggiornato": "07:17",
   "errore": null,
   "pranzo": {
     "Primi": [
       {
-        "nome": "Fusilli al ragù bianco e piselli",
+        "nome": "Pasta alla gricia",
         "allergeni": [
           1,
-          3,
           6,
           7,
-          9,
-          10,
-          12,
-          13
-        ]
-      },
-      {
-        "nome": "Crema di carote e zenzero",
-        "allergeni": [
-          9
-        ]
-      },
-      {
-        "nome": "Riso in bianco o al pomodoro",
-        "allergeni": []
-      }
-    ],
-    "Secondi": [
-      {
-        "nome": "Frittata di verdure e patate",
-        "allergeni": [
-          3,
-          7,
-          9
-        ]
-      },
-      {
-        "nome": "Focaccia farcita R",
-        "allergeni": [
-          1,
-          7,
-          9
-        ]
-      }
-    ],
-    "Contorni": [
-      {
-        "nome": "Spinaci al gratin",
-        "allergeni": [
-          1,
-          7,
-          9
-        ]
-      },
-      {
-        "nome": "Insalata verde/mix",
-        "allergeni": []
-      }
-    ]
-  },
-  "cena": {
-    "Primi": [
-      {
-        "nome": "Pasta al pesto R",
-        "allergeni": [
-          1,
-          3,
-          5,
-          6,
-          7,
-          8,
-          9,
           10,
           13
         ]
       },
       {
-        "nome": "Maccheroni burro e parmigiano 🌱",
+        "nome": "Spaghetti pomodoro e basilico",
         "allergeni": [
           1,
-          3,
           6,
-          7,
           10,
           13
         ]
@@ -101,24 +36,90 @@
     ],
     "Secondi": [
       {
-        "nome": "Primosale al forno",
+        "nome": "Frittata e zucchine",
         "allergeni": [
+          3,
           7
         ]
       },
       {
-        "nome": "Uova strapazzate 🌱",
+        "nome": "Panzerotto alla napoletana",
         "allergeni": [
+          1,
           3,
-          7
+          6,
+          7,
+          10
         ]
       }
     ],
     "Contorni": [
       {
-        "nome": "Verdure al forno gratinate",
+        "nome": "Verza stufata",
+        "allergeni": [
+          9
+        ]
+      },
+      {
+        "nome": "Insalata di finocchi e olive",
+        "allergeni": []
+      }
+    ]
+  },
+  "cena": {
+    "Primi": [
+      {
+        "nome": "Zuppa di cereali",
         "allergeni": [
           1,
+          6,
+          9,
+          10,
+          11,
+          13
+        ]
+      },
+      {
+        "nome": "Pasta alla puttanesca",
+        "allergeni": [
+          1,
+          2,
+          4,
+          6,
+          10,
+          13,
+          14
+        ]
+      },
+      {
+        "nome": "Riso in bianco o al pomodoro",
+        "allergeni": []
+      }
+    ],
+    "Secondi": [
+      {
+        "nome": "Alette e cosci di pollo piccanti",
+        "allergeni": [
+          12
+        ]
+      },
+      {
+        "nome": "Burger vegano 🌱",
+        "allergeni": [
+          1,
+          6,
+          8,
+          9,
+          10,
+          11,
+          13
+        ]
+      }
+    ],
+    "Contorni": [
+      {
+        "nome": "Verdure spadellate",
+        "allergeni": [
           9
         ]
       },
