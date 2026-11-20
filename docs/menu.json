@@ -1,25 +1,77 @@
 {
-  "data": "2026-11-19",
-  "giorno": "giovedì 19 novembre",
-  "aggiornato": "07:17",
+  "data": "2026-11-20",
+  "giorno": "venerdì 20 novembre",
+  "aggiornato": "07:19",
   "errore": null,
   "pranzo": {
     "Primi": [
       {
-        "nome": "Pasta alla gricia",
+        "nome": "Linguine al ragù di scorfano",
         "allergeni": [
           1,
+          2,
+          4,
           6,
-          7,
           10,
-          13
+          12,
+          13,
+          14
         ]
       },
       {
-        "nome": "Spaghetti pomodoro e basilico",
+        "nome": "Crema di patate",
+        "allergeni": [
+          9
+        ]
+      },
+      {
+        "nome": "Riso in bianco o al pomodoro",
+        "allergeni": []
+      }
+    ],
+    "Secondi": [
+      {
+        "nome": "Merluzzo in crosta di patate",
+        "allergeni": [
+          4
+        ]
+      },
+      {
+        "nome": "Pollo alla cacciatora R",
+        "allergeni": [
+          12
+        ]
+      }
+    ],
+    "Contorni": [
+      {
+        "nome": "Verza strascinata",
+        "allergeni": []
+      },
+      {
+        "nome": "Insalata verde/mix",
+        "allergeni": []
+      }
+    ]
+  },
+  "cena": {
+    "Primi": [
+      {
+        "nome": "Risotto al sugo di canocchie",
+        "allergeni": [
+          2,
+          4,
+          12,
+          14
+        ]
+      },
+      {
+        "nome": "Pasta ai quattro formaggi 🌱",
         "allergeni": [
           1,
+          3,
           6,
+          7,
           10,
           13
         ]
@@ -36,91 +88,31 @@
     ],
     "Secondi": [
       {
-        "nome": "Frittata e zucchine",
-        "allergeni": [
-          3,
-          7
-        ]
-      },
-      {
-        "nome": "Panzerotto alla napoletana",
-        "allergeni": [
-          1,
-          3,
-          6,
-          7,
-          10
-        ]
-      }
-    ],
-    "Contorni": [
-      {
-        "nome": "Verza stufata",
-        "allergeni": [
-          9
-        ]
-      },
-      {
-        "nome": "Insalata di finocchi e olive",
-        "allergeni": []
-      }
-    ]
-  },
-  "cena": {
-    "Primi": [
-      {
-        "nome": "Zuppa di cereali",
-        "allergeni": [
-          1,
-          6,
-          9,
-          10,
-          11,
-          13
-        ]
-      },
-      {
-        "nome": "Pasta alla puttanesca",
+        "nome": "Polpette di merluzzo alle erbe",
         "allergeni": [
           1,
           2,
           4,
-          6,
-          10,
-          13,
           14
         ]
       },
       {
-        "nome": "Riso in bianco o al pomodoro",
-        "allergeni": []
-      }
-    ],
-    "Secondi": [
-      {
-        "nome": "Alette e cosci di pollo piccanti",
+        "nome": "Uova in purgatorio R",
         "allergeni": [
-          12
-        ]
-      },
-      {
-        "nome": "Burger vegano 🌱",
-        "allergeni": [
-          1,
-          6,
-          8,
-          9,
-          10,
-          11,
-          13
+          3
         ]
       }
     ],
     "Contorni": [
       {
-        "nome": "Verdure spadellate",
+        "nome": "Lenticchie al vapore",
         "allergeni": [
-          9
+          1,
+          6,
+          8,
+          10,
+          11,
+          13
         ]
       },
       {
