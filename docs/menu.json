@@ -1,88 +1,32 @@
 {
-  "data": "2026-11-23",
-  "giorno": "lunedì 23 novembre",
-  "aggiornato": "09:02",
+  "data": "2026-11-24",
+  "giorno": "martedì 24 novembre",
+  "aggiornato": "07:12",
   "errore": null,
   "pranzo": {
     "Primi": [
       {
-        "nome": "Zuppa di legumi",
+        "nome": "Pasta al sugo di gallinella",
         "allergeni": [
           1,
+          2,
+          4,
           6,
-          9,
-          10,
-          11,
-          13
-        ]
-      },
-      {
-        "nome": "Pasta all’amatriciana R",
-        "allergeni": [
-          1,
-          3,
-          6,
-          7,
           10,
           12,
-          13
+          13,
+          14
         ]
       },
       {
-        "nome": "Riso in bianco o al pomodoro",
-        "allergeni": []
-      }
-    ],
-    "Secondi": [
-      {
-        "nome": "Sformato di zucchine e ricotta",
-        "allergeni": [
-          1,
-          3,
-          7,
-          9
-        ]
-      },
-      {
-        "nome": "Farinata R",
+        "nome": "Pasta e fagioli 🌱",
         "allergeni": [
           1,
           6,
           8,
+          9,
           10,
           11,
-          13
-        ]
-      }
-    ],
-    "Contorni": [
-      {
-        "nome": "Ceci speziati al curry",
-        "allergeni": []
-      },
-      {
-        "nome": "Insalata verde/mix",
-        "allergeni": []
-      }
-    ]
-  },
-  "cena": {
-    "Primi": [
-      {
-        "nome": "Vellutata di piselli",
-        "allergeni": [
-          1,
-          9
-        ]
-      },
-      {
-        "nome": "Sedani in salsa rosa 🌱",
-        "allergeni": [
-          1,
-          3,
-          6,
-          7,
-          10,
           13
         ]
       },
@@ -98,27 +42,82 @@
     ],
     "Secondi": [
       {
-        "nome": "Stinco di maiale al forno",
+        "nome": "Arista al latte",
         "allergeni": [
-          9,
-          12
+          7,
+          9
         ]
       },
       {
-        "nome": "Focaccia farcita R",
+        "nome": "Filetto di merluzzo alla livornese R",
         "allergeni": [
-          1,
-          7,
-          9
+          2,
+          4,
+          12,
+          14
         ]
       }
     ],
     "Contorni": [
       {
-        "nome": "Cavolo cappuccio saltato",
+        "nome": "Verza ripassata",
+        "allergeni": []
+      },
+      {
+        "nome": "Insalata verde/mix",
+        "allergeni": []
+      }
+    ]
+  },
+  "cena": {
+    "Primi": [
+      {
+        "nome": "Pasta tonno e olive",
         "allergeni": [
-          9
+          1,
+          4,
+          6,
+          10,
+          13
         ]
+      },
+      {
+        "nome": "Pasta funghi e piselli 🌱",
+        "allergeni": [
+          1,
+          6,
+          9,
+          10,
+          12,
+          13
+        ]
+      },
+      {
+        "nome": "Riso in bianco o al pomodoro",
+        "allergeni": []
+      }
+    ],
+    "Secondi": [
+      {
+        "nome": "Merlano al pane profumato",
+        "allergeni": [
+          1,
+          2,
+          4,
+          14
+        ]
+      },
+      {
+        "nome": "Pollo alla diavola",
+        "allergeni": [
+          12
+        ]
+      }
+    ],
+    "Contorni": [
+      {
+        "nome": "Patate prezzemolate",
+        "allergeni": []
       },
       {
         "nome": "Insalata verde/mix",
