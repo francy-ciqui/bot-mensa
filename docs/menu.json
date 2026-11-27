@@ -1,29 +1,79 @@
 {
-  "data": "2026-11-26",
-  "giorno": "giovedì 26 novembre",
-  "aggiornato": "07:13",
+  "data": "2026-11-27",
+  "giorno": "venerdì 27 novembre",
+  "aggiornato": "07:18",
   "errore": null,
   "pranzo": {
     "Primi": [
       {
-        "nome": "Orecchiette con cime di rapa R",
+        "nome": "Pasta aglio, olio e alici",
         "allergeni": [
           1,
-          2,
           4,
           6,
           10,
-          13,
-          14
+          13
         ]
       },
       {
-        "nome": "Gnocchetti sardi pomodoro e ricotta 🌱",
+        "nome": "Pasta con broccoletti e scaglie di pecorino 🌱",
         "allergeni": [
           1,
           6,
           7,
+          9,
           10,
+          13
+        ]
+      },
+      {
+        "nome": "Riso in bianco o al pomodoro",
+        "allergeni": []
+      }
+    ],
+    "Secondi": [
+      {
+        "nome": "Sgombro gratinato",
+        "allergeni": [
+          1,
+          2,
+          4,
+          14
+        ]
+      },
+      {
+        "nome": "Torta al testo R",
+        "allergeni": [
+          1,
+          6,
+          10
+        ]
+      }
+    ],
+    "Contorni": [
+      {
+        "nome": "Spinaci e patate al burro",
+        "allergeni": [
+          7,
+          9
+        ]
+      },
+      {
+        "nome": "Insalata verde/mix",
+        "allergeni": []
+      }
+    ]
+  },
+  "cena": {
+    "Primi": [
+      {
+        "nome": "Pasta al ragù bianco con piselli R",
+        "allergeni": [
+          1,
+          6,
+          9,
+          10,
+          12,
           13
         ]
       },
@@ -39,79 +89,28 @@
     ],
     "Secondi": [
       {
-        "nome": "Alette di pollo",
+        "nome": "Arista ai funghi",
         "allergeni": [
+          9,
           12
-        ]
-      },
-      {
-        "nome": "Sformato di zucca e patate 🌱",
-        "allergeni": [
-          1,
-          3,
-          7,
-          9
         ]
       }
     ],
     "Contorni": [
       {
-        "nome": "Porri e patate spadellati",
-        "allergeni": []
-      },
-      {
-        "nome": "Insalata di finocchi e olive",
-        "allergeni": []
-      }
-    ]
-  },
-  "cena": {
-    "Primi": [
-      {
-        "nome": "Crema di carote",
+        "nome": "Caponata di legumi in umido",
         "allergeni": [
           1,
           6,
+          8,
           9,
-          10
-        ]
-      },
-      {
-        "nome": "Pasta e patate alla napoletana R",
-        "allergeni": [
-          1,
-          3,
-          6,
-          7,
           10,
+          11,
           13
         ]
       },
       {
-        "nome": "Riso in bianco o al pomodoro",
-        "allergeni": []
-      }
-    ],
-    "Secondi": [
-      {
-        "nome": "Rustico alla parigina R",
-        "allergeni": [
-          1,
-          3,
-          4,
-          6,
-          7,
-          10
-        ]
-      }
-    ],
-    "Contorni": [
-      {
-        "nome": "Fagiolini piccanti",
-        "allergeni": []
-      },
-      {
-        "nome": "Insalata di finocchi e olive",
+        "nome": "Insalata verde/mix",
         "allergeni": []
       }
     ]
